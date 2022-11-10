@@ -1,5 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="java.util.*, com.vinylZone.User" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!doctype html>
 <html lang="en">
@@ -33,14 +32,14 @@ tr:nth-child(even) {
 <header>
 <nav class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="index.jsp">Vinyl Zone</a>
+    <a class="navbar-brand" href="IndexServlet">${fn:toUpperCase("Vinyl Zone")}</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="index.jsp">Home</a>
+          <a class="nav-link active" aria-current="page" href="IndexServlet">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="login.jsp">Login</a>
@@ -48,9 +47,12 @@ tr:nth-child(even) {
         <li class="nav-item">
           <a class="nav-link" href="register.jsp">Register</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="UserControllerServlet">List Users</a>
+        </li>
       </ul>
     </div>
   </div>
 </nav>
 </header>
-<main class='container'>
+<main class='container-lg'>

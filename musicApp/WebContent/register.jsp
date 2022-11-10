@@ -4,7 +4,7 @@
 
 <h2> Register </h2>
 
-<form action="process-user.jsp" method="">
+<form action="UserControllerServlet" method="GET">
 
   <label for="userName">Username: 
   <input type="text" name="userName" id="userName"/>
@@ -40,7 +40,7 @@
   
   <br />
   <br />
-  <input type="submit" value="submit" />
+  <input type="submit" name="command" value="REGISTER" />
   
 </form>
 

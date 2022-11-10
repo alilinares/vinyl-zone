@@ -121,6 +121,13 @@ public class User {
 	public String getBio() {
 		return bio;
 	}
+
+	@Override
+	public String toString() {
+		return "User [userID=" + userID + ", username=" + username + ", firstName=" + firstName + ", lastName="
+				+ lastName + ", email=" + email + ", password=" + password + ", role=" + role + ", profilePhoto="
+				+ profilePhoto + ", bio=" + bio + "]";
+	}
 	
 	
 }
