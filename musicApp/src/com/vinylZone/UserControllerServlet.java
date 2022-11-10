@@ -70,17 +70,17 @@ public class UserControllerServlet extends HttpServlet {
 	}
 
 	private void registerUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		// get user information
+		// Get inputted user information from register.jsp
 		String username = request.getParameter("username");
 		String firstName = request.getParameter("firstName");
 		String lastName = request.getParameter("lastName");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		
-        // create user 
+        // create a user account
 		User user = new User(username,firstName,lastName,email,password);
 		
-		// store user
+		// insert user into the database
 		userDbUtil.addUser(user);
 		
 		// send back to list of users.
