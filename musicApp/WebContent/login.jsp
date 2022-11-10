@@ -13,7 +13,7 @@ Username:
 <label for="password">
 Password (8 characters minimum):
 <br/>
-<input type="password" name="password" id="password" minglength="8" required/>
+<input type="password" name="password" id="password" minlength="8" required/>
 </label>
 <br/>
 <br/>
