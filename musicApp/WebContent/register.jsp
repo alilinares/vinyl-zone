@@ -6,8 +6,8 @@
 
 <form action="UserControllerServlet" method="GET">
 
-  <label for="userName">Username: 
-  <input type="text" name="userName" id="userName"/>
+  <label for="username">Username: 
+  <input type="text" name="username" id="username"/>
   </label>
   
   <br />
