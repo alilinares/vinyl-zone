@@ -93,7 +93,6 @@ public class UserControllerServlet extends HttpServlet {
 		userDbUtil.updateUser(user);
 		// send them back to their userProfile
 		listUsers(request,response);
-		
 	}
 
 	private void loadUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -107,7 +106,7 @@ public class UserControllerServlet extends HttpServlet {
 		request.setAttribute("USER", user);
 		
 		//send to userProfile
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/UserProfile.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/userProfile.jsp");
 		dispatcher.forward(request, response);
 		
 	}
