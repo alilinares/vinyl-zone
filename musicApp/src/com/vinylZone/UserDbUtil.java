@@ -271,4 +271,31 @@ public class UserDbUtil {
 		
 	}
 
+	public void deleteUser(int userId) throws Exception {
+		//jdbc objects
+		Connection dbConnection=null;
+		PreparedStatement statement=null;
+		
+				
+		try {
+			
+			// make connection
+			dbConnection = this.dataSource.getConnection();
+			
+			// create sql insert
+			String sql = "DELETE FROM users WHERE userID=?";
+			
+			//prepare statement
+			statement = dbConnection.prepareStatement(sql);
+			statement.setInt(1,userId);
+					
+			// execute sql insert
+			statement.execute();
+			
+			}finally {
+				// clean up jdbc objects. 
+				close(dbConnection,statement,null);
+			}
+	}
+
 }

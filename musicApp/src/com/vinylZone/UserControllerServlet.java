@@ -68,7 +68,10 @@ public class UserControllerServlet extends HttpServlet {
 				  break;
 			  case "UPDATE_USER":
 				  updateUser(request,response);
-				  break;  
+				  break;
+			  case "DELETE_USER":
+				  deleteUser(request,response);
+				  break;
 			  default:
 				  listUsers(request,response);
 			}
@@ -78,6 +81,15 @@ public class UserControllerServlet extends HttpServlet {
 		}
 	}
 	
+	private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		// get user id
+		int userId = Integer.parseInt(request.getParameter("userId"));
+		// delete user from database
+		userDbUtil.deleteUser(userId);
+		//send them back to list-users.jsp
+		listUsers(request, response);
+	}
+
 	private void updateUser(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		// get new user data
 		int userId = Integer.parseInt(request.getParameter("userId"));
