@@ -29,7 +29,6 @@ public class User {
 	 * @param profilePhoto
 	 * @param bio
 	 */
-    
     public User(String username, String firstName, String lastName, String email, String password) {
 		super();
 		this.username = username;

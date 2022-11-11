@@ -233,5 +233,40 @@ public class UserDbUtil {
 				close(dbConnection,statement,results);
 			}
 	}
+	
+
+	public void updateUser(User u) throws Exception {		
+		//jdbc objects
+		Connection dbConnection=null;
+		PreparedStatement statement=null;
+		
+				
+		try {
+			
+			// make connection
+			dbConnection = this.dataSource.getConnection();
+			
+			// create sql insert
+			String sql = "UPDATE users"
+					+"SET username=?, firstName=?, lastName=?, email=?, password=?"
+					+"WHERE userID=?";
+			//prepare statement
+			statement = dbConnection.prepareStatement(sql);
+			
+			statement.setString(1, u.getUsername());
+			statement.setString(2, u.getFirstName());
+			statement.setString(3, u.getLastName());
+			statement.setString(4, u.getEmail());
+			statement.setString(5, u.getPassword());
+					
+			// execute sql insert
+			statement.execute();
+			
+			}finally {
+				// clean up jdbc objects. 
+				close(dbConnection,statement,null);
+			}		
+		
+	}
 
 }

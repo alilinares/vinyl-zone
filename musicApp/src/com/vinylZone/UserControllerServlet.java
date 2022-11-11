@@ -78,8 +78,21 @@ public class UserControllerServlet extends HttpServlet {
 		}
 	}
 	
-	private void updateUser(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
+	private void updateUser(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		// get new user data
+		int userId = Integer.parseInt(request.getParameter("userId"));
+		String username = request.getParameter("username");
+		String firstName = request.getParameter("firstName");
+		String lastName = request.getParameter("lastName");
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		// create user object to store/send data 
+		User user = new User(username,firstName,lastName,email,password);
+		user.setUserId(userId);
+		// update database with userId
+		userDbUtil.updateUser(user);
+		// send them back to their userProfile
+		listUsers(request,response);
 		
 	}
 
@@ -94,7 +107,7 @@ public class UserControllerServlet extends HttpServlet {
 		request.setAttribute("USER", user);
 		
 		//send to userProfile
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/userProfile.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/UserProfile.jsp");
 		dispatcher.forward(request, response);
 		
 	}
