@@ -6,7 +6,7 @@ public class User {
 
     //fields
 
-    int userID;
+    private int userId;
 
     private String username;
     private String firstName;
@@ -54,8 +54,8 @@ public class User {
 	
     //methods
 
-	protected void setUserID(int userID) {
-        this.userID = userID;
+	public void setUserId(int userId) {
+        this.userId = userId;
     }
 
 	protected void setUsername(String username) {
@@ -121,10 +121,15 @@ public class User {
 	public String getBio() {
 		return bio;
 	}
+	
+	public int getUserId() {
+		return this.userId;
+	}
+
 
 	@Override
 	public String toString() {
-		return "User [userID=" + userID + ", username=" + username + ", firstName=" + firstName + ", lastName="
+		return "User [userId=" + userId + ", username=" + username + ", firstName=" + firstName + ", lastName="
 				+ lastName + ", email=" + email + ", password=" + password + ", role=" + role + ", profilePhoto="
 				+ profilePhoto + ", bio=" + bio + "]";
 	}

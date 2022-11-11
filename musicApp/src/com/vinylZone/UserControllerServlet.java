@@ -50,19 +50,25 @@ public class UserControllerServlet extends HttpServlet {
 			
 			//if command is missing, default = listing users
 			if (command == null) {
-				command = "LIST";
+				command = "LIST_USERS";
 			}
 			// route to the appropriate method
 			switch(command) {
-			  case "LIST" : 
+			  case "LIST_USERS" : 
 				  listUsers(request,response);
 				  break;
-			  case "REGISTER": 
+			  case "REGISTER_USER": 
 				  registerUser(request,response);
 			      break;
-			  case "LOGIN":
+			  case "LOGIN_USER":
 				  loginUser(request,response);
 				  break;
+			  case "LOAD_USER":
+				  loadUser(request,response);
+				  break;
+			  case "UPDATE_USER":
+				  updateUser(request,response);
+				  break;  
 			  default:
 				  listUsers(request,response);
 			}
@@ -72,12 +78,33 @@ public class UserControllerServlet extends HttpServlet {
 		}
 	}
 	
+	private void updateUser(HttpServletRequest request, HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void loadUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		//get specific user 
+		String userId = request.getParameter("userId");
+		
+		//get from database
+		User user= userDbUtil.retrieveUser(userId);
+		
+		//store user in request
+		request.setAttribute("USER", user);
+		
+		//send to userProfile
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/userProfile.jsp");
+		dispatcher.forward(request, response);
+		
+	}
+
 	private void loginUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// get user login cred.
 		String username=request.getParameter("username");
 		String password=request.getParameter("password");
 		// verify user login cred.
-		int verified = this.userDbUtil.verifyUser(username,password);
+		int verified = this.userDbUtil.loginUser(username,password);
 		if(verified == 1) {
 			// user exists and is verified send them to their userProfile.jsp
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/userProfile.jsp");

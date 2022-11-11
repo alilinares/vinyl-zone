@@ -40,7 +40,8 @@
   
   <br />
   <br />
-  <input type="submit" name="command" value="REGISTER" />
+  <input type="hidden" name="command" value="REGISTER_USER" />
+  <input type="submit" name="registerBtn" value="Sign Up" />
   
 </form>
 

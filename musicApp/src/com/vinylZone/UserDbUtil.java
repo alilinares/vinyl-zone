@@ -3,6 +3,7 @@ package com.vinylZone;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -76,14 +77,18 @@ public class UserDbUtil {
 			
 			while (resultSet.next()) {
 				// retrieve data from row
+				int userId = resultSet.getInt("userID");
 				String username = resultSet.getString("username");
 				String firstName = resultSet.getString("firstName");
 				String lastName = resultSet.getString("lastName");
 				String email = resultSet.getString("email");
 				String password = resultSet.getString("password");
 				
+				
 				// create user object
 				User u = new User(username,firstName,lastName,email,password);
+				// store user id of user
+				u.setUserId(userId);
 				
 				// add user object to list
 				users.add(u);
@@ -145,7 +150,7 @@ public class UserDbUtil {
 		}
 	}
 	
-	public int verifyUser(String u, String p)throws Exception {
+	public int loginUser(String u, String p)throws Exception {
 		// return 1 if user in database -1 if no user exists
 		
 		//jdbc objects
@@ -183,4 +188,50 @@ public class UserDbUtil {
 			close(dbConnection,statement,results);
 		}
 	}
+
+	public User retrieveUser(String userId) throws Exception {
+		User user=null;
+		
+		//jdbc objects
+		Connection dbConnection=null;
+		PreparedStatement statement=null;
+		ResultSet results=null;
+		
+				
+		try {
+			int id = Integer.parseInt(userId);
+			
+			// make connection
+			dbConnection = this.dataSource.getConnection();
+			
+			// create sql insert
+			String sql = "SELECT * FROM users WHERE users.userID=?";
+					
+			//prepare statement
+			statement = dbConnection.prepareStatement(sql);
+			statement.setInt(1, id);
+					
+			// execute sql insert
+			results = statement.executeQuery();
+			if(results.next()) {
+				String username = results.getString("username");
+				String firstName = results.getString("firstName");
+				String lastName = results.getString("lastName");
+				String email = results.getString("email");
+				String password = results.getString("password");
+			//make user object
+			user = new User(username,firstName,lastName,email,password);
+			user.setUserId(id);
+			
+			}else {
+				throw new Exception("Could not find user.");
+			}
+			return user;
+
+			}finally {
+				// clean up jdbc objects. 
+				close(dbConnection,statement,results);
+			}
+	}
+
 }

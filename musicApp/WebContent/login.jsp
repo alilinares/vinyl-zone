@@ -17,7 +17,7 @@ Password (8 characters minimum):
 </label>
 <br/>
 <br/>
-<input type="submit" name="command" id="loginBtn" value="LOGIN"/>
+<input type="submit" name="command" id="loginBtn" value="LOGIN_USER"/>
 
 </form>
 
