@@ -1,23 +1,23 @@
 
 <jsp:include page="header.jsp"/>
 
-<h2> login </h2>
+<h2 class="display-2 mb-5" >Login</h2>
 
 <form action="UserControllerServlet" method="GET" >
-<label for="username">
-Username:
-<br/>
-<input type="text" name="username" id="username" required />
-</label>
-<br/>
-<label for="password">
-Password (8 characters minimum):
-<br/>
-<input type="password" name="password" id="password" required/>
-</label>
-<br/>
-<br/>
-<input type="submit" name="command" id="loginBtn" value="LOGIN_USER"/>
+
+<div class="form-group">
+	<label for="username">Username</label>
+	<input type="text" class="form-control  w-50 mt-2 mb-2" name="username" id="username" required />
+</div>
+
+
+<div class="form-group">
+	<label for="password">Password</label>
+	<input type="password" class="form-control  w-50 mt-2 mb-2" name="password" id="password" required/>
+	<small id="passwordHelp" class="form-text text-muted"><a href="#">Forgot Password?</a></small>
+</div>
+
+<button type="submit" class="btn bg-secondary text-light mt-3 mb-3" name="command" id="loginBtn" value="LOGIN_USER">Login</button>
 
 </form>
 
