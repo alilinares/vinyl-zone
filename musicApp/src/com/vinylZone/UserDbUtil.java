@@ -1,5 +1,7 @@
 package com.vinylZone;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,8 +14,6 @@ import javax.sql.DataSource;
 public class UserDbUtil {
 
 	private DataSource dataSource;
-	private String databaseUser = "vinylzone";
-	private String databasePassword = "vinylZone100";
 
 	
 
@@ -33,23 +33,26 @@ public class UserDbUtil {
 		this.dataSource = dataSource;
 	}
 
-	public String getDatabaseUser() {
-		return databaseUser;
-	}
-
-	public void setDatabaseUser(String databaseUser) {
-		this.databaseUser = databaseUser;
-	}
-
-	public String getDatabasePassword() {
-		return databasePassword;
-	}
-
-	public void setDatabasePassword(String databasePassword) {
-		this.databasePassword = databasePassword;
-	}
 
 // Methods
+
+	private void close(Connection dbConnection, Statement sqlStatement, ResultSet resultSet) {
+		
+		try {
+			if(resultSet != null) {
+				resultSet.close();
+			}
+			if(sqlStatement != null) {
+				sqlStatement.close();
+			}
+			if(dbConnection != null) {
+				dbConnection.close(); // return connection use. 
+			}
+		}
+		catch(Exception exc) {
+			exc.printStackTrace();
+		}
+	}
 	
 	public ArrayList<User> getUsers() throws Exception {
 		// return a list of users in the db
@@ -103,25 +106,8 @@ public class UserDbUtil {
 		}
 	}
 
-	private void close(Connection dbConnection, Statement sqlStatement, ResultSet resultSet) {
-		
-		try {
-			if(resultSet != null) {
-				resultSet.close();
-			}
-			if(sqlStatement != null) {
-				sqlStatement.close();
-			}
-			if(dbConnection != null) {
-				dbConnection.close(); // return connection use. 
-			}
-		}
-		catch(Exception exc) {
-			exc.printStackTrace();
-		}
-	}
-
 	public void addUser(User u) throws Exception{
+		
 		// jdbc objects
 		Connection dbConnection = null;
 		PreparedStatement statement = null;
@@ -189,17 +175,15 @@ public class UserDbUtil {
 		}
 	}
 
-	public User retrieveUser(String userId) throws Exception {
+	public User retrieveUser(int userId) throws Exception {
 		User user=null;
 		
 		//jdbc objects
 		Connection dbConnection=null;
 		PreparedStatement statement=null;
 		ResultSet results=null;
-		
 				
 		try {
-			int id = Integer.parseInt(userId);
 			
 			// make connection
 			dbConnection = this.dataSource.getConnection();
@@ -209,7 +193,7 @@ public class UserDbUtil {
 					
 			//prepare statement
 			statement = dbConnection.prepareStatement(sql);
-			statement.setInt(1, id);
+			statement.setInt(1, userId);
 					
 			// execute sql insert
 			results = statement.executeQuery();
@@ -221,7 +205,7 @@ public class UserDbUtil {
 				String password = results.getString("password");
 			//make user object
 			user = new User(username,firstName,lastName,email,password);
-			user.setUserId(id);
+			user.setUserId(userId);
 			
 			}else {
 				throw new Exception("Could not find user.");
@@ -234,7 +218,55 @@ public class UserDbUtil {
 			}
 	}
 	
+	public User retrieveUser(String usrName) throws Exception{
+		User user=null;
+		
+		//jdbc objects
+		Connection dbConnection=null;
+		PreparedStatement statement=null;
+		ResultSet results=null;
+				
+		try {
+			
+			// attempt connection
+			dbConnection = this.dataSource.getConnection();
+			
+			// create sql insert query
+			String sql = "SELECT * FROM users WHERE users.username=?";
+					
+			//prepare sql statement
+			statement = dbConnection.prepareStatement(sql);
+			statement.setString(1, usrName);
+					
+			// execute sql and store results
+			results = statement.executeQuery();
+			
+			if(results.next()) {
+				int userId = Integer.parseInt(results.getString("userID"));
+				String username = results.getString("username");
+				String firstName = results.getString("firstName");
+				String lastName = results.getString("lastName");
+				String email = results.getString("email");
+				String password = results.getString("password");
+				// File profilePhoto = new File(results.getString("profilePhoto"));
+				String bio = results.getString("biography");
+				String role = results.getString("role");
+				
+			//make user object
+			user = new User(username,firstName,lastName,email,password);
+			
+			}else {
+				throw new Exception("Could not find user.");
+			}
+			return user;
 
+			}finally {
+				// clean up jdbc objects. 
+				close(dbConnection,statement,results);
+			}
+		
+	}
+	
 	public void updateUser(User u) throws Exception {		
 		//jdbc objects
 		Connection dbConnection=null;

@@ -10,5 +10,6 @@
               username="vinylzone"
               password="vinylZone100"
               driverClassName="com.mysql.cj.jdbc.Driver"
-              url="jdbc:mysql://localhost:3306/vinylZone?useUnicode=true&amp;serverTimezone=UTC&amp;characterEncoding=UTF8"/>
+              url="jdbc:mysql://localhost:3306/vinylZone?useUnicode=true&amp;serverTimezone=UTC&amp;characterEncoding=UTF8"
+              />
 </Context>

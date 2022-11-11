@@ -6,7 +6,8 @@
 <form action="UserControllerServlet" method="GET">
 
   <input type="hidden" name="userId" value="${USER.userId}" />
-
+  
+  
 <div class="form-group">
   <label for="username">Username</label> 
   <input type="text" name="username" id="username" value="${USER.username}" class="form-control  w-50 mt-2 mb-2" />
@@ -32,6 +33,12 @@
   <textarea  name="bio" id="bio" value="" class="form-control  w-50 mt-2 mb-2"> </textarea>
   <small>Limit 250 characters</small>
 </div>
+
+ <div class="form-group mt-3">
+    <label for="fileUpload">Upload Profile Photo</label>
+    <br/>
+    <input type="file" class="form-control-file w-50 mt-3 mb-3" id="fileUpload">
+  </div>
 
   <button type="submit" name="command" value="UPDATE_USER" class="btn bg-secondary text-light mt-3 mb-3">Update</button>
   

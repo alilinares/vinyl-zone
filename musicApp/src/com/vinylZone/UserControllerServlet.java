@@ -19,11 +19,12 @@ import javax.sql.DataSource;
 public class UserControllerServlet extends HttpServlet {
 	
 	// Attributes
+	
 	private static final long serialVersionUID = 1L;
+	
 	private UserDbUtil userDbUtil;
 	
-	// resource injection 
-	@Resource(name="jdbc/vinylZone")
+	@Resource(name="jdbc/vinylZone") // resource injection 
 	private DataSource dataSource;
 	
 
@@ -45,6 +46,41 @@ public class UserControllerServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			
+		try {
+			// read command parameter
+			String command = request.getParameter("command");
+			
+			//if command is missing, default = listing users
+			if (command == null) {
+				command = "LIST_USERS";
+			}
+			// route to the appropriate method
+			switch(command) {
+			  case "LIST_USERS" : 
+				  listUsers(request,response);
+				  break;
+			  case "LOGIN_USER":
+				  loginUser(request,response);
+				  break;
+			  case "LOAD_USER":
+				  loadUser(request,response);
+				  break;
+			  case "UPDATE_USER":
+				  updateUser(request,response);
+				  break;
+			  case "DELETE_USER":
+				  deleteUser(request,response);
+				  break;
+			  default:
+				  listUsers(request,response);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		try {
 			// read command parameter
 			String command = request.getParameter("command");
@@ -109,11 +145,18 @@ public class UserControllerServlet extends HttpServlet {
 	}
 
 	private void loadUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		User user = null;
 		//get specific user 
 		String userId = request.getParameter("userId");
 		
+		String username = request.getParameter("username");
+		
 		//get from database
-		User user= userDbUtil.retrieveUser(userId);
+		if(userId != null) {
+			user = userDbUtil.retrieveUser(Integer.parseInt(userId));
+		}else {
+			user = userDbUtil.retrieveUser(username);
+		}
 		
 		//store user in request
 		request.setAttribute("USER", user);
@@ -141,22 +184,23 @@ public class UserControllerServlet extends HttpServlet {
 	}
 
 	private void registerUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		// Get inputted user information from register.jsp
+		// Get Form data
 		String username = request.getParameter("username");
 		String firstName = request.getParameter("firstName");
 		String lastName = request.getParameter("lastName");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		
-        // create a user account
+        //Create a user instance
 		User user = new User(username,firstName,lastName,email,password);
 		
 		// insert user into the database
+		
 		this.userDbUtil.addUser(user);
 		
 		// send back to list of users.
 		//listUsers(request,response);
-		listUsers(request,response);
+		loadUser(request,response);
 	}
 
 	private void listUsers(HttpServletRequest request, HttpServletResponse response) throws Exception{

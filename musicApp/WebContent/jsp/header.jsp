@@ -23,4 +23,4 @@
   </div>
 </nav>
 </header>
-<main class='container-lg'>
+<main class='container'>
