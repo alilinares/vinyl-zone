@@ -144,4 +144,43 @@ public class UserDbUtil {
 			close(dbConnection,statement,null);
 		}
 	}
+	
+	public int verifyUser(String u, String p)throws Exception {
+		// return 1 if user in database -1 if no user exists
+		
+		//jdbc objects
+		Connection dbConnection=null;
+		PreparedStatement statement=null;
+		ResultSet results=null;
+		ArrayList<String> user = new ArrayList<String>();
+		
+		try {
+			// make connection
+			dbConnection = dataSource.getConnection();
+			
+			// create sql insert
+			String sql = "SELECT username,password FROM users WHERE users.username='"+u+"'"
+					+" AND users.password='"+p+ "'" ;
+			
+			//prepare statement
+			statement = dbConnection.prepareStatement(sql);
+			
+			// execute sql insert
+			results = statement.executeQuery();
+			while(results.next()) {
+				String username=results.getString("username");
+				String password=results.getString("password");
+				user.add(username);
+				user.add(password);
+			}
+			if(user.size()==2) {
+				return 1;
+			}else {
+				return -1;
+			}
+		}finally {
+		    // clean up jdbc objects. 
+			close(dbConnection,statement,results);
+		}
+	}
 }

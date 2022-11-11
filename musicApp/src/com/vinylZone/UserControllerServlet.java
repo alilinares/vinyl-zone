@@ -60,6 +60,9 @@ public class UserControllerServlet extends HttpServlet {
 			  case "REGISTER": 
 				  registerUser(request,response);
 			      break;
+			  case "LOGIN":
+				  loginUser(request,response);
+				  break;
 			  default:
 				  listUsers(request,response);
 			}
@@ -67,6 +70,22 @@ public class UserControllerServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void loginUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		// get user login cred.
+		String username=request.getParameter("username");
+		String password=request.getParameter("password");
+		// verify user login cred.
+		int verified = this.userDbUtil.verifyUser(username,password);
+		if(verified == 1) {
+			// user exists and is verified send them to their userProfile.jsp
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/userProfile.jsp");
+			dispatcher.forward(request, response);
+		}else {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/loginFail.jsp");
+			dispatcher.forward(request, response);
+		}	
 	}
 
 	private void registerUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -81,7 +100,7 @@ public class UserControllerServlet extends HttpServlet {
 		User user = new User(username,firstName,lastName,email,password);
 		
 		// insert user into the database
-		userDbUtil.addUser(user);
+		this.userDbUtil.addUser(user);
 		
 		// send back to list of users.
 		//listUsers(request,response);
