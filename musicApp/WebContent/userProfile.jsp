@@ -1,48 +1,39 @@
 
 <jsp:include page="header.jsp"/>
 
-<h1>User Profile</h1>
+<h2 class='display-2 mb-5'>Public Profile</h2>
 
 <form action="UserControllerServlet" method="GET">
 
   <input type="hidden" name="userId" value="${USER.userId}" />
 
-  <label for="username">Username: 
-  <input type="text" name="username" id="username" value="${USER.username}"/>
-  </label>  
-  <br />
-  <br />
+<div class="form-group">
+  <label for="username">Username</label> 
+  <input type="text" name="username" id="username" value="${USER.username}" class="form-control  w-50 mt-2 mb-2" />
+</div>
 
+<div class="form-group">
+  <label for="firstName">First Name</label>
+  <input type="text" name="firstName" id="firstName" value="${USER.firstName}" class="form-control  w-50 mt-2 mb-2" />
+</div>
+  
+<div class="form-group">
+  <label for="lastName">Last Name</label>
+  <input type="text" name="lastName" id="lastName" value="${USER.lastName}" class="form-control  w-50 mt-2 mb-2"/>
+</div>
 
-  <label for="firstName">First Name:
-  <input type="text" name="firstName" id="firstName" value="${USER.firstName}"/>
-  </label>
+<div class="form-group">
+  <label for="email">Email Address</label>
+  <input type="text" name="email" id="email" value="${USER.email}" class="form-control  w-50 mt-2 mb-2" />
+</div>
   
-  <br />
-  <br />
-  
-  <label for="lastName">Last Name:
-  <input type="text" name="lastName" id="lastName" value="${USER.lastName}"/>
-  </label>
-  
-  <br />
-  <br />
-  
-  <label for="email">Email Address:
-  <input type="text" name="email" id="email" value="${USER.email}" />
-  </label>
-  
-  <br />
-  <br />
-  
-  <label for="password">Password: 
-  <input type="password" name="password" id="password" value="${USER.password}" />
-  </label>
-  
-  <br />
-  <br />
-  <input type="hidden" name="command" value="UPDATE_USER" />
-  <input type="submit" name="updateBtn" value="Update" />
+<div class="form-group">  
+  <label for="bio">Bio</label>
+  <textarea  name="bio" id="bio" value="" class="form-control  w-50 mt-2 mb-2"> </textarea>
+  <small>Limit 250 characters</small>
+</div>
+
+  <button type="submit" name="command" value="UPDATE_USER" class="btn bg-secondary text-light mt-3 mb-3">Update</button>
   
 </form>
 
