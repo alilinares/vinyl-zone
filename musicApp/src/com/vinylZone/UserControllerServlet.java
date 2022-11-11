@@ -17,8 +17,9 @@ import javax.sql.DataSource;
  */
 @WebServlet("/UserControllerServlet")
 public class UserControllerServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
 	
+	// Attributes
+	private static final long serialVersionUID = 1L;
 	private UserDbUtil userDbUtil;
 	
 	// resource injection 
