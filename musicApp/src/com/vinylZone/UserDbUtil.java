@@ -247,9 +247,10 @@ public class UserDbUtil {
 			dbConnection = this.dataSource.getConnection();
 			
 			// create sql insert
-			String sql = "UPDATE users"
-					+"SET username=?, firstName=?, lastName=?, email=?, password=?"
+			String sql = "UPDATE users "
+					+"SET username=?, firstName=?, lastName=?, email=?, password=? "
 					+"WHERE userID=?";
+			
 			//prepare statement
 			statement = dbConnection.prepareStatement(sql);
 			
@@ -258,6 +259,7 @@ public class UserDbUtil {
 			statement.setString(3, u.getLastName());
 			statement.setString(4, u.getEmail());
 			statement.setString(5, u.getPassword());
+			statement.setInt(6,u.getUserId());
 					
 			// execute sql insert
 			statement.execute();
