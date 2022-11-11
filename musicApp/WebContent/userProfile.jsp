@@ -8,7 +8,7 @@
   <input type="hidden" name="userId" value="${USER.userId}" />
 
   <label for="username">Username: 
-  <input type="text" name="username" id="username" value="${USER.firstName}"/>
+  <input type="text" name="username" id="username" value="${USER.username}"/>
   </label>  
   <br />
   <br />
