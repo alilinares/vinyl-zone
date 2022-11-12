@@ -2,6 +2,9 @@ package com.vinylZone;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -69,7 +72,7 @@ public class UserDbUtil {
 			dbConnection = dataSource.getConnection();
 			
 			// create sql statement object
-			String sql = "SELECT * FROM users ORDER BY lastName";	
+			String sql = "SELECT * FROM users ORDER BY userID DESC";	
 			sqlStatement = dbConnection.createStatement();
 			
 			
@@ -87,15 +90,11 @@ public class UserDbUtil {
 				String email = resultSet.getString("email");
 				String password = resultSet.getString("password");
 				
-				
-				// create user object
 				User u = new User(username,firstName,lastName,email,password);
-				// store user id of user
 				u.setUserId(userId);
 				
 				// add user object to list
 				users.add(u);
-				
 			}
 			
 	    return users;
@@ -106,6 +105,7 @@ public class UserDbUtil {
 		}
 	}
 
+	
 	public void addUser(User u) throws Exception{
 		
 		// jdbc objects
@@ -136,21 +136,21 @@ public class UserDbUtil {
 		}
 	}
 	
-	public int loginUser(String u, String p)throws Exception {
-		// return 1 if user in database -1 if no user exists
-		
+	
+	public User verifyUser(String u, String p)throws Exception {
+		//
+		User user = null;
 		//jdbc objects
 		Connection dbConnection=null;
 		PreparedStatement statement=null;
 		ResultSet results=null;
-		ArrayList<String> user = new ArrayList<String>();
 		
 		try {
 			// make connection
 			dbConnection = dataSource.getConnection();
 			
 			// create sql insert
-			String sql = "SELECT username,password FROM users WHERE users.username='"+u+"'"
+			String sql = "SELECT * FROM users WHERE users.username='"+u+"'"
 					+" AND users.password='"+p+ "'" ;
 			
 			//prepare statement
@@ -158,23 +158,25 @@ public class UserDbUtil {
 			
 			// execute sql insert
 			results = statement.executeQuery();
-			while(results.next()) {
+			if(results.next()) {
+				int userId = Integer.parseInt(results.getString("userID"));
 				String username=results.getString("username");
+				String lastName=results.getString("firstName");
+				String firstName=results.getString("lastName");
 				String password=results.getString("password");
-				user.add(username);
-				user.add(password);
+				String email=results.getString("email");
+				String biography=results.getString("biography");
+				
+				user = new User(userId,username,firstName,lastName,email,password,biography);
 			}
-			if(user.size()==2) {
-				return 1;
-			}else {
-				return -1;
-			}
+			return user;
 		}finally {
 		    // clean up jdbc objects. 
 			close(dbConnection,statement,results);
 		}
 	}
 
+	
 	public User retrieveUser(int userId) throws Exception {
 		User user=null;
 		
@@ -203,9 +205,15 @@ public class UserDbUtil {
 				String lastName = results.getString("lastName");
 				String email = results.getString("email");
 				String password = results.getString("password");
+				String biography = results.getString("biography");
+				Blob profilePhoto = results.getBlob("profilePhoto");
+				
 			//make user object
 			user = new User(username,firstName,lastName,email,password);
+			
+			user.setBio(biography);
 			user.setUserId(userId);
+			
 			
 			}else {
 				throw new Exception("Could not find user.");
@@ -217,6 +225,7 @@ public class UserDbUtil {
 				close(dbConnection,statement,results);
 			}
 	}
+	
 	
 	public User retrieveUser(String usrName) throws Exception{
 		User user=null;
@@ -267,6 +276,8 @@ public class UserDbUtil {
 		
 	}
 	
+	
+
 	public void updateUser(User u) throws Exception {		
 		//jdbc objects
 		Connection dbConnection=null;
@@ -280,8 +291,8 @@ public class UserDbUtil {
 			
 			// create sql insert
 			String sql = "UPDATE users "
-					+"SET username=?, firstName=?, lastName=?, email=?, password=? "
-					+"WHERE userID=?";
+					+"SET username=?, firstName=?, lastName=?, email=?, password=?, biography=?, profilePhoto=?"
+					+" WHERE userID=?";
 			
 			//prepare statement
 			statement = dbConnection.prepareStatement(sql);
@@ -291,7 +302,14 @@ public class UserDbUtil {
 			statement.setString(3, u.getLastName());
 			statement.setString(4, u.getEmail());
 			statement.setString(5, u.getPassword());
-			statement.setInt(6,u.getUserId());
+			statement.setString(6, u.getBio());
+			
+			if(u.getProfilePhoto() != null) {
+				statement.setBinaryStream(7, u.getProfilePhoto());
+			}else {
+				statement.setBinaryStream(7, null);
+			}
+			statement.setInt(8,u.getUserId());
 					
 			// execute sql insert
 			statement.execute();
@@ -303,6 +321,7 @@ public class UserDbUtil {
 		
 	}
 
+	
 	public void deleteUser(int userId) throws Exception {
 		//jdbc objects
 		Connection dbConnection=null;
@@ -330,4 +349,45 @@ public class UserDbUtil {
 			}
 	}
 
+	
+	public User verifyUser(String e) throws SQLException, FileNotFoundException{
+		User user = null;
+		//jdbc objects
+		Connection dbConnection=null;
+		PreparedStatement statement=null;
+		ResultSet results=null;
+		
+		try {
+			// make connection
+			dbConnection = dataSource.getConnection();
+			
+			// create sql insert
+			String sql = "SELECT * FROM users WHERE users.email='"+e+"'";
+			
+			//prepare statement
+			statement = dbConnection.prepareStatement(sql);
+			
+			// execute sql insert
+			results = statement.executeQuery();
+			
+			if(results.next()) {
+				int userId = Integer.parseInt(results.getString("userID"));
+				String username=results.getString("username");
+				String lastName=results.getString("firstName");
+				String firstName=results.getString("lastName");
+				String password=results.getString("password");
+				String email=results.getString("email");
+				String biography=results.getString("biography");
+				
+				user = new User(userId,username,firstName,lastName,email,password,biography);
+				}
+			return user;
+			}finally {
+		    // clean up jdbc objects. 
+			close(dbConnection,statement,results);
+			}
+		}
+
+	
+	
 }

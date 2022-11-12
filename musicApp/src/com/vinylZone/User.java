@@ -1,6 +1,9 @@
 package com.vinylZone;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class User {
 
@@ -14,7 +17,7 @@ public class User {
     private String email;
     private String password;
     private String role;
-    private File profilePhoto;
+    private InputStream profilePhoto;
     private String bio; //250 bio character description limit.
 
     //contructors
@@ -30,39 +33,47 @@ public class User {
 	 * @param bio
 	 */
     
-    public User(String username, String firstName, String lastName, String email, String password) {
+    public User(String username, String firstName, String lastName, String email, String password) throws Exception {
 		super();
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
+		// defaults
+		this.role = "subscriber";
+		this.bio = "...";
 	}
     
-	public User(String username, String firstName, String lastName, String email, String password, String role,
-			File profilePhoto, String bio) {
+    public User(int userId, String username, String firstName, String lastName, String email, String password,String bio) throws FileNotFoundException {
 		super();
+		
+		this.userId=userId;
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
-		this.role = role;
-		this.profilePhoto = profilePhoto;
-		this.bio = bio;
+		this.bio=bio;
+		// defaults
+		this.role = "subscriber";	
 	}
+    
 	
-	public User(int userId, String username, String firstName, String lastName, String email, String password, String role,
-			File profilePhoto, String bio) {
+	public User(int userId, String username, 
+			String firstName, String lastName, 
+			String email, String password, String bio,InputStream profilePhoto) {
 		super();
+		this.userId = userId;
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
-		this.role = role;
 		this.profilePhoto = profilePhoto;
 		this.bio = bio;
+		this.role = "subscriber";
+		
 	}
 	
     //methods
@@ -99,7 +110,7 @@ public class User {
         this.bio = bio;
     }
 
-	protected void setProfilePhoto(File profilePhoto) {
+	protected void setProfilePhoto(InputStream profilePhoto) {
         this.profilePhoto = profilePhoto;
     }
 
@@ -127,7 +138,7 @@ public class User {
 		return role;
 	}
 
-	public File getProfilePhoto() {
+	public InputStream getProfilePhoto() {
 		return profilePhoto;
 	}
 

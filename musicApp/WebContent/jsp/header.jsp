@@ -19,6 +19,7 @@
     <div class="nav">
         <a class="nav-item nav-link" href="login.jsp">Login</a>
  		<a class="nav-item nav-link" href="register.jsp">Register</a>
+ 		<a class="nav-item nav-link" href="UserControllerServlet">User List</a>
     </div>
   </div>
 </nav>

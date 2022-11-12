@@ -7,7 +7,7 @@
   <hr class="my-4">
   <p>Create an account and explore a plathora of vinyls in our database.</p>
   <p class="lead">
-    <a class="btn bg-secondary text-light btn-lg" href="login.jsp" role="button">Sign Up</a>
+    <a class="btn bg-secondary text-light btn-lg" href="register.jsp" role="button">Sign Up</a>
   </p>
 </div>
 
