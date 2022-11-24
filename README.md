@@ -1,7 +1,7 @@
 # vinyl-zone
 a modern music library 
 
-## Software used
+## Technology Stack
 1. Java - programming language
 2. Java Servlets to handle business logic
 3. JSP tags
