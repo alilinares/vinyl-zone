@@ -1,6 +1,6 @@
 package com.vinylZone;
 
-public class user {
+public class Playlist {
     //fields
     private int playlistId;
 

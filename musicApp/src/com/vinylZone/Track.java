@@ -59,11 +59,11 @@ public class Track {
         this.lyrics = lyrics;
     }
 
-    public String getRealeaseDate() {
-        return realeaseDate;
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
-    public void setRealeaseDate(String realeaseDate) {
-        this.realeaseDate = realeaseDate;
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 }
