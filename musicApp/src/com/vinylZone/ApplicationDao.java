@@ -5,6 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -21,44 +24,24 @@ import javax.sql.DataSource;
 import javax.mail.*;
 import javax.mail.internet.*;
 
-/**
- * Servlet implementation class ApplicationDao
- */
-@WebServlet("/ApplicationDao")
-@MultipartConfig(
-		  fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
-		  maxFileSize = 1024 * 1024 * 10,      // 10 MB
-		  maxRequestSize = 1024 * 1024 * 100   // 100 MB
-		)
-public class ApplicationDao extends HttpServlet {
+
+public class ApplicationDao {
 	
 	// Attributes
+	DatabaseUtility databaseUtility;
 	
-	private static final long serialVersionUID = 1L;
-	
-	private DatabaseUtility databaseUtility;
-	
-	@Resource(name="jdbc/vinylZone") // resource injection 
-	private DataSource dataSource;
+	// Constructor
+	public ApplicationDao(){
+		this.databaseUtility = new DatabaseUtility();
+	}
 	
 
-	@Override
-	public void init() throws ServletException {
-		super.init();
-		
-		try {
-			// create an instance of UserDBUtil & pass in the conn pool
-			databaseUtility = new DatabaseUtility(dataSource);
-			
-		}catch(Exception e) {
-			throw new ServletException(e);
-		}
-	}
+
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	/*protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			
 		try {
 			// read command parameter
@@ -88,7 +71,6 @@ public class ApplicationDao extends HttpServlet {
 		}
 	}
 	
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
@@ -132,9 +114,80 @@ public class ApplicationDao extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}*/
+	
+
+    // USER OPERATIONS
+	
+	protected int registerUser(User user, DataSource dataSource) {
+		int rowsAffected = 0;
+		
+		try {
+			// make database connection	
+			this.databaseUtility.makeConnection(dataSource);
+			// insert user into the database
+			rowsAffected = this.databaseUtility.addUser(user);
+			//close database connection
+			this.databaseUtility.closeConnection();
+			
+		} catch (SQLException e) {
+			System.out.println("connection failed");
+			e.printStackTrace();
+		}
+		return rowsAffected;
 	}
 	
-	private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	protected User findUserByUsernameAndEmail(String un,String em, DataSource dataSource) {
+		User user = null;
+		try {
+			// start a connection to the database
+			databaseUtility.makeConnection(dataSource);
+			// Retrieve user from database if user exists, else return null 
+			user = databaseUtility.getUserByUsernameAndEmail(un,em);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+		    // close connection
+			databaseUtility.closeConnection();
+		}
+		return user;	
+	}
+    
+	protected User findUserByUsernameAndPassword(String username,String password, DataSource dataSource) {
+		User user = null;
+		try {
+			// start a connection to the database
+			databaseUtility.makeConnection(dataSource);
+			// Retrieve user from database if user exists, else return null 
+			user = databaseUtility.getUserByUsernameAndPassword(username,password);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+		    // close connection
+			databaseUtility.closeConnection();
+		}
+		return user;	
+	}
+	
+	protected User findUserByID(int uid, DataSource dataSource) {
+		User user = null;
+	
+		try {
+			// start a connection to the database
+			databaseUtility.makeConnection(dataSource);
+			// Retrieve user from database if user exists, else return null 
+			user = databaseUtility.getUserById(uid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+		    // close connection
+			databaseUtility.closeConnection();
+		}
+		return user;
+	}
+
+/*
+	protected void deleteUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// get user id
 		int userId = Integer.parseInt(request.getParameter("userId"));
 		// delete user from database
@@ -143,7 +196,7 @@ public class ApplicationDao extends HttpServlet {
 		listUsers(request, response);
 	}
 
-	private void updateUser(HttpServletRequest request, HttpServletResponse response) throws Exception{
+	protected void updateUser(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		// get new user data
 		int userId = Integer.parseInt(request.getParameter("userId"));
 		String username = request.getParameter("username");
@@ -177,76 +230,9 @@ public class ApplicationDao extends HttpServlet {
 		listUsers(request,response);
 	}
 
-	private void loadUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		// get user data and send them too userProfile
-		User user = null;
-		
-		//get specific user 
-		String userId = request.getParameter("userId");
-		
-		String username = request.getParameter("username");
-		
-		//get from database
-		if(userId != null) {
-			user = databaseUtility.retrieveUser(Integer.parseInt(userId));
-		}else {
-			user = databaseUtility.retrieveUser(username);
-		}
-		
-		//store user in request
-		request.setAttribute("USER", user);
-		
-		//send to userProfile
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/userProfile.jsp");
-		dispatcher.forward(request, response);
-		
-	}
-
-	private void loginUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		// get user login cred.
-		String username=request.getParameter("username");
-		String password=request.getParameter("password");
-		// verify user login cred.
-		User user = this.databaseUtility.verifyUser(username,password);
-		
-		if(user != null) {
-			// user exists and is verified send them to their userProfile.jsp
-			request.setAttribute("USER", user);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/userProfile.jsp");
-			dispatcher.forward(request, response);
-		}else {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/loginFail.jsp");
-			dispatcher.forward(request, response);
-		}	
-	}
-
-	
-	private void registerUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		// Get Form data
-		String username = request.getParameter("username");
-		String firstName = request.getParameter("firstName");
-		String lastName = request.getParameter("lastName");
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
-		
-        //Create a user instance
-		User user = new User(username,firstName,lastName,email,password);
-
-		
-		// insert user into the database
-		
-		this.databaseUtility.addUser(user);
-		
-		// send back to list of users.
-		//listUsers(request,response);
-		loadUser(request,response);
-	}
-
-	
-	private void listUsers(HttpServletRequest request, HttpServletResponse response) throws Exception{
+	protected void listUsers(HttpServletRequest request, HttpServletResponse response) throws Exception{
 			// get users
-			ArrayList<User> users = this.databaseUtility.getUsers();
+			ArrayList<User> users = this.databaseUtility.getListOfUsers();
 			// add users to request object
 			request.setAttribute("USER_LIST", users);
 			// send to JSP
@@ -255,8 +241,7 @@ public class ApplicationDao extends HttpServlet {
 		
 	}
 
-
-	private void resetPassword(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+	protected void resetPassword(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
 		// get form data
 		String email = request.getParameter("email");
 		
@@ -269,7 +254,7 @@ public class ApplicationDao extends HttpServlet {
 		}
 	}
 
-	private void sendTemporaryPassword(String email) {
+	protected void sendTemporaryPassword(String email) {
 		// Set up the SMTP server.
 		java.util.Properties props = new java.util.Properties();
 		props.put("mail.smtp.host", "smtp.myisp.com");
@@ -294,4 +279,8 @@ public class ApplicationDao extends HttpServlet {
 	}
 
 
+
+
+	
+*/
 }

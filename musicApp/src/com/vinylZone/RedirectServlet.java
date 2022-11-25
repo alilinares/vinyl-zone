@@ -19,7 +19,6 @@ public class RedirectServlet extends HttpServlet {
      */
     public RedirectServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**

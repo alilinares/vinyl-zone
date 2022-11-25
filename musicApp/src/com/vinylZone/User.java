@@ -33,8 +33,14 @@ public class User {
 	 * @param bio
 	 */
     
-    public User(String username, String firstName, String lastName, String email, String password) throws Exception {
+    
+    public User(String username
+    			, String firstName
+    			, String lastName
+    			, String email
+    			, String password) {
 		super();
+		
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -45,7 +51,12 @@ public class User {
 		this.bio = "...";
 	}
     
-    public User(int userId, String username, String firstName, String lastName, String email, String password,String bio) throws FileNotFoundException {
+    public User(int userId
+    			, String username
+    			, String firstName
+    			, String lastName
+    			, String email
+    			, String password) {
 		super();
 		
 		this.userId=userId;
@@ -54,16 +65,20 @@ public class User {
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
-		this.bio=bio;
 		// defaults
 		this.role = "subscriber";	
 	}
     
 	
-	public User(int userId, String username, 
-			String firstName, String lastName, 
-			String email, String password, String bio,InputStream profilePhoto) {
+	public User(int userId
+				, String username
+				, String firstName, String lastName
+				, String email
+				, String password
+				, String bio
+				, InputStream profilePhoto) {
 		super();
+		
 		this.userId = userId;
 		this.username = username;
 		this.firstName = firstName;
