@@ -20,6 +20,7 @@
         <a class="nav-item nav-link" href="login.jsp">Login</a>
  		<a class="nav-item nav-link" href="register.jsp">Register</a>
  		<a class="nav-item nav-link" href="UserControllerServlet">User List</a>
+ 		<a class="nav-item nav-link" href="fileUpload.jsp">File Upload</a>
     </div>
   </div>
 </nav>
