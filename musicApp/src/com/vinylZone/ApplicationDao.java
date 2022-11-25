@@ -22,15 +22,15 @@ import javax.mail.*;
 import javax.mail.internet.*;
 
 /**
- * Servlet implementation class UserControllerServlet
+ * Servlet implementation class ApplicationDao
  */
-@WebServlet("/UserControllerServlet")
+@WebServlet("/ApplicationDao")
 @MultipartConfig(
 		  fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
 		  maxFileSize = 1024 * 1024 * 10,      // 10 MB
 		  maxRequestSize = 1024 * 1024 * 100   // 100 MB
 		)
-public class UserControllerServlet extends HttpServlet {
+public class ApplicationDao extends HttpServlet {
 	
 	// Attributes
 	
