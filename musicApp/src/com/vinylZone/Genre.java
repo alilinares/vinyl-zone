@@ -10,7 +10,12 @@ public class Genre {
     private String description;
 
     //constructors
+    public Genre(int genreId, String name, String description){
 
+        this.genreId = genreId;
+        this.name = name;
+        this.description = description;
+    }
 
     //methods
 

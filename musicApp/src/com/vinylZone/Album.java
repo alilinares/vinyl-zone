@@ -13,7 +13,15 @@ public class Album {
 
     //constructors
 
+    public Album(int albumId, String title, int duration, String releaseDate, String description){
 
+
+        this.albumId = albumId;
+        this.title = title;
+        this.duration = duration;
+        this.releaseDate = releaseDate;
+        this.description = description;
+    }
 
     //methods
 

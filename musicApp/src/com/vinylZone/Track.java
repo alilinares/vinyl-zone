@@ -9,10 +9,19 @@ public class Track {
     private int duration;
     private String title;
     private String lyrics;
-    private String realeaseDate;
+    private String releaseDate;
 
 
     //constructors
+    public Track(int trackId, int duration, String title, String lyrics, String releaseDate){
+        super();
+        this.trackId = trackId;
+        this.duration = duration;
+        this.title = title;
+        this.lyrics = lyrics;
+        this.releaseDate = releaseDate;
+    }
+
 
 
     //methods

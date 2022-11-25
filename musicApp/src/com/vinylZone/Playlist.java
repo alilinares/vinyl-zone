@@ -9,6 +9,13 @@ public class user {
     private String description;
 
     //constructors
+    public Playlist(int playlistId, String title, int duration, String description){
+
+        this.playlistId = playlistId;
+        this.title = title;
+        this.duration = duration;
+        this.description = description;
+    }
 
 
     //methods

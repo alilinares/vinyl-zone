@@ -10,7 +10,11 @@ public class Musician {
 
 
     //constructors
+    public Musician(int musicianId, String name){
 
+        this.musicianId = musicianId;
+        this.name = name;
+    }
 
 
 
