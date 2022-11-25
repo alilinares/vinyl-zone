@@ -1,6 +1,8 @@
 <%@ page import="java.util.*, com.vinylZone.User" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="header.jsp"/>
+
+<!-- BANNER -->
 <div class="jumbotron">
   <h1 class="display-4">Vinyl Zone</h1>
   <p class="lead">A well curated music library.</p>

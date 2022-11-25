@@ -11,53 +11,62 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 public class DatabaseUtility {
-
-	private DataSource dataSource;
-
 	
+	// PROPERTIES 
+	private Connection connection=null;
+	private PreparedStatement statement=null;
+	private ResultSet resultSet=null;
 
 	/**
 	 * @param dataSource
 	 */
-	public DatabaseUtility(DataSource dataSource) {
+	
+	public DatabaseUtility() {
 		super();
-		this.dataSource = dataSource;
+	}
+
+
+   /* Summary of Methods 
+    * close(Connection c, Statement s, ResultSet rs);
+    * getUsers();
+    * 
+    * */
+	
+	protected void  makeConnection(DataSource dataSource) throws SQLException {
+		// Make a connection to the database, else return null
+		this.connection = dataSource.getConnection();
 	}
 	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
 
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
-
-
-// Methods
-
-	private void close(Connection dbConnection, Statement sqlStatement, ResultSet resultSet) {
+	protected void closeConnection() {
 		
 		try {
-			if(resultSet != null) {
-				resultSet.close();
+			if(this.resultSet != null) {
+				this.resultSet.close();
 			}
-			if(sqlStatement != null) {
-				sqlStatement.close();
+			if(this.statement != null) {
+				this.statement.close();
 			}
-			if(dbConnection != null) {
-				dbConnection.close(); // return connection use. 
+			if(this.connection != null) {
+				this.connection.close(); // return connection use. 
 			}
 		}
 		catch(Exception exc) {
 			exc.printStackTrace();
+		}finally {
+			// clean - just in case. 
+			this.connection = null;
+			this.statement = null;
+			this.resultSet = null;
 		}
 	}
 	
-	public ArrayList<User> getUsers() throws Exception {
+	// GENERAL CRUD OPERATIONS FOR USERS
+	/* public ArrayList<User> getListOfUsers() throws Exception {
 		// return a list of users in the db
 		ArrayList<User> users = new ArrayList<User>();
 		
@@ -104,180 +113,145 @@ public class DatabaseUtility {
 			close(dbConnection,sqlStatement,resultSet);
 		}
 	}
-
+	*/
+	// USER CRUD OPERATIONS
 	
-	public void addUser(User u) throws Exception{
+	// Create a user
+	public int addUser(User u){
+		String sql = "INSERT INTO USER (username,firstName,lastName,email,password) VALUES(?,?,?,?,?)";
+		int rowsAffected = 0;
 		
-		// jdbc objects
-		Connection dbConnection = null;
-		PreparedStatement statement = null;
-		
+		// prepare statement. 
 		try {
-			dbConnection = dataSource.getConnection();
-			
-			// create sql insert for use'
-			String sql = "INSERT INTO users (username,firstName,lastName,email,password) VALUES(?,?,?,?,?)";
-			
-			statement = dbConnection.prepareStatement(sql);
-			
-			// Get values from User
+			statement = this.connection.prepareStatement(sql);
+			// Get values from user object
 			statement.setString(1,u.getUsername());
 			statement.setString(2,u.getFirstName());
 			statement.setString(3,u.getLastName());
 			statement.setString(4,u.getEmail());
 			statement.setString(5,u.getPassword());
-			
 			// execute sql insert
-			statement.executeUpdate();
+			rowsAffected = statement.executeUpdate(); // 0 if nothing happened
 			
-		}finally {
-		    // clean up jdbc objects. 
-			close(dbConnection,statement,null);
+		} catch (SQLException e) {
+			System.out.println("Something went wrong from addUser()");
+			e.printStackTrace();
 		}
-	}
-	
-	
-	public User verifyUser(String u, String p)throws Exception {
-		//
-		User user = null;
-		//jdbc objects
-		Connection dbConnection=null;
-		PreparedStatement statement=null;
-		ResultSet results=null;
 		
-		try {
-			// make connection
-			dbConnection = dataSource.getConnection();
-			
-			// create sql insert
-			String sql = "SELECT * FROM users WHERE users.username='"+u+"'"
-					+" AND users.password='"+p+ "'" ;
-			
-			//prepare statement
-			statement = dbConnection.prepareStatement(sql);
-			
-			// execute sql insert
-			results = statement.executeQuery();
-			if(results.next()) {
-				int userId = Integer.parseInt(results.getString("userID"));
-				String username=results.getString("username");
-				String lastName=results.getString("firstName");
-				String firstName=results.getString("lastName");
-				String password=results.getString("password");
-				String email=results.getString("email");
-				String biography=results.getString("biography");
-				
-				user = new User(userId,username,firstName,lastName,email,password,biography);
-			}
-			return user;
-		}finally {
-		    // clean up jdbc objects. 
-			close(dbConnection,statement,results);
-		}
+		return rowsAffected;
 	}
-
 	
-	public User retrieveUser(int userId) throws Exception {
+	// Retrieve a user
+	public User getUserById(int uid) {
+		String sql = "SELECT * FROM users WHERE users.userID=?";
 		User user=null;
 		
-		//jdbc objects
-		Connection dbConnection=null;
-		PreparedStatement statement=null;
-		ResultSet results=null;
-				
-		try {
-			
-			// make connection
-			dbConnection = this.dataSource.getConnection();
-			
-			// create sql insert
-			String sql = "SELECT * FROM users WHERE users.userID=?";
-					
-			//prepare statement
-			statement = dbConnection.prepareStatement(sql);
-			statement.setInt(1, userId);
-					
-			// execute sql insert
-			results = statement.executeQuery();
-			if(results.next()) {
-				String username = results.getString("username");
-				String firstName = results.getString("firstName");
-				String lastName = results.getString("lastName");
-				String email = results.getString("email");
-				String password = results.getString("password");
-				String biography = results.getString("biography");
-				Blob profilePhoto = results.getBlob("profilePhoto");
-				
-			//make user object
-			user = new User(username,firstName,lastName,email,password);
-			
-			user.setBio(biography);
-			user.setUserId(userId);
-			
-			
-			}else {
-				throw new Exception("Could not find user.");
-			}
-			return user;
-
-			}finally {
-				// clean up jdbc objects. 
-				close(dbConnection,statement,results);
-			}
-	}
-	
-	
-	public User retrieveUser(String usrName) throws Exception{
-		User user=null;
-		
-		//jdbc objects
-		Connection dbConnection=null;
-		PreparedStatement statement=null;
-		ResultSet results=null;
-				
-		try {
-			
-			// attempt connection
-			dbConnection = this.dataSource.getConnection();
-			
-			// create sql insert query
-			String sql = "SELECT * FROM users WHERE users.username=?";
-					
+		try {	
 			//prepare sql statement
-			statement = dbConnection.prepareStatement(sql);
-			statement.setString(1, usrName);
+			statement = this.connection.prepareStatement(sql);
+			
+			//Set values on placeholders found in sql query string
+			statement.setString(1, String.valueOf(uid));
 					
 			// execute sql and store results
-			results = statement.executeQuery();
+			this.resultSet = statement.executeQuery();
 			
-			if(results.next()) {
-				int userId = Integer.parseInt(results.getString("userID"));
-				String username = results.getString("username");
-				String firstName = results.getString("firstName");
-				String lastName = results.getString("lastName");
-				String email = results.getString("email");
-				String password = results.getString("password");
+			if(resultSet.next()) {
+				String username = resultSet.getString("username");
+				String firstName = resultSet.getString("firstName");
+				String lastName = resultSet.getString("lastName");
+				String email = resultSet.getString("email");
+				String password = resultSet.getString("password");
 				// File profilePhoto = new File(results.getString("profilePhoto"));
-				String bio = results.getString("biography");
-				String role = results.getString("role");
-				
-			//make user object
-			user = new User(username,firstName,lastName,email,password);
-			
-			}else {
-				throw new Exception("Could not find user.");
+				String bio = resultSet.getString("biography");
+				String role = resultSet.getString("role");
+		
+				//instantiate user object
+				user = new User(username,firstName,lastName,email,password);
+				user.setUserId(uid);
+				}
+			}catch(Exception e) {
+				System.out.println("trouble finding user...");
+				e.printStackTrace();
 			}
-			return user;
-
-			}finally {
-				// clean up jdbc objects. 
-				close(dbConnection,statement,results);
-			}
+			return user;		
 		
 	}
-	
-	
 
+	public User getUserByUsernameAndPassword(String u, String p){
+		
+		String sql = "SELECT * FROM users WHERE users.username=? AND users.password=?"; // sql query
+		User user=null;
+		
+		try {	
+			//prepare sql statement
+			statement = this.connection.prepareStatement(sql);
+			//Set values on placeholders found in sql query string 
+			statement.setString(1, u);
+			statement.setString(2, p);
+					
+			// execute sql and store results
+			this.resultSet = statement.executeQuery();
+			
+			if(resultSet.next()) {
+				int userId = Integer.parseInt(resultSet.getString("userID"));
+				String username = resultSet.getString("username");
+				String firstName = resultSet.getString("firstName");
+				String lastName = resultSet.getString("lastName");
+				String email = resultSet.getString("email");
+				String password = resultSet.getString("password");
+				// File profilePhoto = new File(results.getString("profilePhoto"));
+				String bio = resultSet.getString("biography");
+				String role = resultSet.getString("role");
+		
+				//instantiate user object
+				user = new User(username,firstName,lastName,email,password);
+				}
+			}catch(Exception e) {
+				System.out.println("user not found");
+				e.printStackTrace();
+			}
+			return user;
+	}
+
+	public User getUserByUsernameAndEmail(String u, String e) {
+		String sql = "SELECT * FROM USER WHERE USER.username=? AND USER.email=?";
+		User user=null;
+		
+		try {	
+			//prepare sql statement
+			statement = this.connection.prepareStatement(sql);
+			
+			//Set values on placeholders found in sql query string
+			statement.setString(1, u);
+			statement.setString(2, e);
+					
+			// execute sql and store results
+			this.resultSet = statement.executeQuery();
+			
+			if(resultSet.next()) {
+				int    userID = Integer.valueOf(resultSet.getString("userID"));
+				String username = resultSet.getString("username");
+				String firstName = resultSet.getString("firstName");
+				String lastName = resultSet.getString("lastName");
+				String email = resultSet.getString("email");
+				String password = resultSet.getString("password");
+				// File profilePhoto = new File(results.getString("profilePhoto"));
+				String bio = resultSet.getString("biography");
+				String role = resultSet.getString("role");
+		
+				//instantiate user object
+				user = new User(userID,username,firstName,lastName,email,password);
+				}
+			}catch(Exception exception) {
+				System.out.println("trouble finding user...");
+				exception.printStackTrace();
+			}
+			return user;
+	}
+	
+	// Update a user
+	/*
 	public void updateUser(User u) throws Exception {		
 		//jdbc objects
 		Connection dbConnection=null;
@@ -321,7 +295,6 @@ public class DatabaseUtility {
 		
 	}
 
-	
 	public void deleteUser(int userId) throws Exception {
 		//jdbc objects
 		Connection dbConnection=null;
@@ -348,7 +321,6 @@ public class DatabaseUtility {
 				close(dbConnection,statement,null);
 			}
 	}
-
 	
 	public User verifyUser(String e) throws SQLException, FileNotFoundException{
 		User user = null;
@@ -388,6 +360,6 @@ public class DatabaseUtility {
 			}
 		}
 
-	
+	*/
 	
 }

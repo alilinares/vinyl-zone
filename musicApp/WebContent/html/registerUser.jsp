@@ -2,9 +2,9 @@
 <jsp:include page="header.jsp"/>
 
 
-<h2 class="display-2 mb-5"> Register </h2>
+<h2 class="display-2 mb-5">Register</h2>
 
-<form action="UserControllerServlet" method="POST">
+<form action="RegisterUserServlet" method="POST">
 
 <div class="form-group">
 	<label for="username">Username</label>
