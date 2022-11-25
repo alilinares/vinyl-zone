@@ -36,7 +36,7 @@ public class UserControllerServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private UserDbUtil userDbUtil;
+	private DatabaseUtility databaseUtility;
 	
 	@Resource(name="jdbc/vinylZone") // resource injection 
 	private DataSource dataSource;
@@ -48,7 +48,7 @@ public class UserControllerServlet extends HttpServlet {
 		
 		try {
 			// create an instance of UserDBUtil & pass in the conn pool
-			userDbUtil = new UserDbUtil(dataSource);
+			databaseUtility = new DatabaseUtility(dataSource);
 			
 		}catch(Exception e) {
 			throw new ServletException(e);
@@ -138,7 +138,7 @@ public class UserControllerServlet extends HttpServlet {
 		// get user id
 		int userId = Integer.parseInt(request.getParameter("userId"));
 		// delete user from database
-		userDbUtil.deleteUser(userId);
+		databaseUtility.deleteUser(userId);
 		//send them back to list-users.jsp
 		listUsers(request, response);
 	}
@@ -171,7 +171,7 @@ public class UserControllerServlet extends HttpServlet {
 		User user = new User(userId, username,firstName,lastName,email,password,bio,inputStream);
 		
 		// update database with userId
-		userDbUtil.updateUser(user);
+		databaseUtility.updateUser(user);
 		
 		// send them back to their userProfile
 		listUsers(request,response);
@@ -188,9 +188,9 @@ public class UserControllerServlet extends HttpServlet {
 		
 		//get from database
 		if(userId != null) {
-			user = userDbUtil.retrieveUser(Integer.parseInt(userId));
+			user = databaseUtility.retrieveUser(Integer.parseInt(userId));
 		}else {
-			user = userDbUtil.retrieveUser(username);
+			user = databaseUtility.retrieveUser(username);
 		}
 		
 		//store user in request
@@ -207,7 +207,7 @@ public class UserControllerServlet extends HttpServlet {
 		String username=request.getParameter("username");
 		String password=request.getParameter("password");
 		// verify user login cred.
-		User user = this.userDbUtil.verifyUser(username,password);
+		User user = this.databaseUtility.verifyUser(username,password);
 		
 		if(user != null) {
 			// user exists and is verified send them to their userProfile.jsp
@@ -236,7 +236,7 @@ public class UserControllerServlet extends HttpServlet {
 		
 		// insert user into the database
 		
-		this.userDbUtil.addUser(user);
+		this.databaseUtility.addUser(user);
 		
 		// send back to list of users.
 		//listUsers(request,response);
@@ -246,7 +246,7 @@ public class UserControllerServlet extends HttpServlet {
 	
 	private void listUsers(HttpServletRequest request, HttpServletResponse response) throws Exception{
 			// get users
-			ArrayList<User> users = this.userDbUtil.getUsers();
+			ArrayList<User> users = this.databaseUtility.getUsers();
 			// add users to request object
 			request.setAttribute("USER_LIST", users);
 			// send to JSP
@@ -261,7 +261,7 @@ public class UserControllerServlet extends HttpServlet {
 		String email = request.getParameter("email");
 		
 		//verify
-		User user = this.userDbUtil.verifyUser(email);
+		User user = this.databaseUtility.verifyUser(email);
 		if(user !=null) {
 			sendTemporaryPassword(email);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/resetPassword.jsp");

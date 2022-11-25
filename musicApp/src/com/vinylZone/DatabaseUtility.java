@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 import javax.sql.DataSource;
 
-public class UserDbUtil {
+public class DatabaseUtility {
 
 	private DataSource dataSource;
 
@@ -23,7 +23,7 @@ public class UserDbUtil {
 	/**
 	 * @param dataSource
 	 */
-	public UserDbUtil(DataSource dataSource) {
+	public DatabaseUtility(DataSource dataSource) {
 		super();
 		this.dataSource = dataSource;
 	}
