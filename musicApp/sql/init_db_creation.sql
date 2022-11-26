@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `vinylZone`.`ALBUM` (
   `Title` VARCHAR(45) NULL,
   `Duration` VARCHAR(45) NULL,
   `ReleaseDate` DATETIME NULL,
-  `Description` VARCHAR(250) NULL,
+  `Description` LONGTEXT NULL,
   `GenreID` INT NOT NULL,
   `MusicianID` INT NOT NULL,
   PRIMARY KEY (`AlbumID`),
@@ -133,8 +133,8 @@ CREATE TABLE IF NOT EXISTS `vinylZone`.`PLAYLIST` (
   `Title` VARCHAR(45) NULL,
   `Duration` TIME NULL,
   `Description` VARCHAR(250) NULL,
-  `UserID` INT NOT NULL,
-  `GenreID` INT NOT NULL,
+  `UserID` INT,
+  `GenreID` INT,
   PRIMARY KEY (`PlaylistID`),
   INDEX `fk_PLAYLIST_USER1_idx` (`UserID` ASC) VISIBLE,
   INDEX `fk_PLAYLIST_GENRE1_idx` (`GenreID` ASC) VISIBLE,
@@ -186,7 +186,7 @@ CREATE TABLE IF NOT EXISTS `vinylZone`.`TRACK` (
   `Duration` TIME NULL,
   `Title` VARCHAR(45) NULL,
   `Lyrics` LONGTEXT NULL,
-  `ReleaseDate` DATETIME NULL,
+  `ReleaseDate` VARCHAR(100) NULL,
   `MusicianID` INT NOT NULL,
   `GenreID` INT NOT NULL,
   PRIMARY KEY (`TrackID`, `MusicianID`, `GenreID`),
@@ -236,11 +236,11 @@ INSERT INTO `vinylzone`.`genre` (`GenreID`, `Name`, `Description`) VALUES (5, 'P
 INSERT INTO `vinylzone`.`genre` (`GenreID`, `Name`, `Description`) VALUES (6, 'Various Genres', 'Various Genres');
 
 
-INSERT INTO `vinylzone`.`album` (`AlbumID`, `Title`, `Duration`, `ReleaseDate`, `Description`, `GenreID`, `MusicianID`) VALUES (1, 'I See You', '39:17', '2017', 'I See You is the third studio album by English indie pop band the xx. It was released on 13 January 2017 by the Young Turks record label. It was the band\'s first album in more than four years, following 2012\'s Coexist. - wikipedia', 1, 1);
-INSERT INTO `vinylzone`.`album` (`AlbumID`, `Title`, `Duration`, `ReleaseDate`, `Description`, `GenreID`, `MusicianID`) VALUES (2, 'Heaven or Las Vegas', '37:24', '1990', 'Heaven or Las Vegas is the sixth studio album by Scottish alternative rock band Cocteau Twins - wikipedia', 2, 2);
-INSERT INTO `vinylzone`.`album` (`AlbumID`, `Title`, `Duration`, `ReleaseDate`, `Description`, `GenreID`, `MusicianID`) VALUES (3, 'Another Green World', '40:55', '1975', 'Another Green World is the third studio album by English musician Brian Eno, released by Island Records in November 1975. Produced by Eno and Rhett Davies, it features contributions from a small core of musicians, including Robert Fripp, Phil Collins, Percy Jones, and Rod Melvin. John Cale plays viola on two tracks. - wikipedia', 3, 3);
-INSERT INTO `vinylzone`.`album` (`AlbumID`, `Title`, `Duration`, `ReleaseDate`, `Description`, `GenreID`, `MusicianID`) VALUES (4, 'The Dark Side of the Moon', '42:53', '1973', 'The Dark Side of the Moon is the eighth studio album by the English rock band Pink Floyd, released on 1 March 1973 by Harvest Records. The album was primarily developed during live performances, and the band premiered an early version of the suite several months before recording began. - wikipedia', 4, 4);
-INSERT INTO `vinylzone`.`album` (`AlbumID`, `Title`, `Duration`, `ReleaseDate`, `Description`, `GenreID`, `MusicianID`) VALUES (5, 'Harry\'s House', '41:59', '2022', 'Harry\'s House is the third studio album by English singer and songwriter Harry Styles, released on 20 May 2022 by Columbia Records and Erskine. The album was largely written and recorded during 2020 and 2021 and has been noted as Styles\' most introspective work. - wikipedia', 5, 5);
+INSERT INTO `vinylzone`.`album` (`AlbumID`, `Title`, `Duration`, `ReleaseDate`, `Description`, `GenreID`, `MusicianID`) VALUES (1, 'I See You', '39:17', null, 'I See You is the third studio album by English indie pop band the xx. It was released on 13 January 2017 by the Young Turks record label. It was the band\'s first album in more than four years, following 2012\'s Coexist. - wikipedia', 1, 1);
+INSERT INTO `vinylzone`.`album` (`AlbumID`, `Title`, `Duration`, `ReleaseDate`, `Description`, `GenreID`, `MusicianID`) VALUES (2, 'Heaven or Las Vegas', '37:24', null, 'Heaven or Las Vegas is the sixth studio album by Scottish alternative rock band Cocteau Twins - wikipedia', 2, 2);
+INSERT INTO `vinylzone`.`album` (`AlbumID`, `Title`, `Duration`, `ReleaseDate`, `Description`, `GenreID`, `MusicianID`) VALUES (3, 'Another Green World', '40:55', null, 'Another Green World is the third studio album by English musician Brian Eno, released by Island Records in November 1975. Produced by Eno and Rhett Davies, it features contributions from a small core of musicians, including Robert Fripp, Phil Collins, Percy Jones, and Rod Melvin. John Cale plays viola on two tracks. - wikipedia', 3, 3);
+INSERT INTO `vinylzone`.`album` (`AlbumID`, `Title`, `Duration`, `ReleaseDate`, `Description`, `GenreID`, `MusicianID`) VALUES (4, 'The Dark Side of the Moon', '42:53', null, 'The Dark Side of the Moon is the eighth studio album by the English rock band Pink Floyd, released on 1 March 1973 by Harvest Records. The album was primarily developed during live performances, and the band premiered an early version of the suite several months before recording began. - wikipedia', 4, 4);
+INSERT INTO `vinylzone`.`album` (`AlbumID`, `Title`, `Duration`, `ReleaseDate`, `Description`, `GenreID`, `MusicianID`) VALUES (5, 'Harry\'s House', '41:59', null, 'Harry\'s House is the third studio album by English singer and songwriter Harry Styles, released on 20 May 2022 by Columbia Records and Erskine. The album was largely written and recorded during 2020 and 2021 and has been noted as Styles\' most introspective work. - wikipedia', 5, 5);
 
 
 INSERT INTO `vinylzone`.`playlist` (`PlaylistID`, `Title`, `Duration`, `Description`, `UserID`, `GenreID`) VALUES (1, 'myplaylist 1', '19:37', 'my fav songs', 1, 6);
