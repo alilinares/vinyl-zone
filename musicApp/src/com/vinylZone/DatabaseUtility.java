@@ -25,7 +25,7 @@ public class DatabaseUtility {
 	 * @param dataSource
 	 */
 	
-	public DatabaseUtility() {
+	protected DatabaseUtility() {
 		super();
 	}
 
@@ -66,58 +66,10 @@ public class DatabaseUtility {
 	}
 	
 	// GENERAL CRUD OPERATIONS FOR USERS
-	/* public ArrayList<User> getListOfUsers() throws Exception {
-		// return a list of users in the db
-		ArrayList<User> users = new ArrayList<User>();
-		
-		// set variables
-		Connection dbConnection = null;
-		Statement sqlStatement = null;
-		ResultSet resultSet=null;
-		
-		try{
-			
-			// get a connection
-			dbConnection = dataSource.getConnection();
-			
-			// create sql statement object
-			String sql = "SELECT * FROM users ORDER BY userID DESC";	
-			sqlStatement = dbConnection.createStatement();
-			
-			
-			// execute query
-			resultSet = sqlStatement.executeQuery(sql);
-			
-			// process result set
-			
-			while (resultSet.next()) {
-				// retrieve data from row
-				int userId = resultSet.getInt("userID");
-				String username = resultSet.getString("username");
-				String firstName = resultSet.getString("firstName");
-				String lastName = resultSet.getString("lastName");
-				String email = resultSet.getString("email");
-				String password = resultSet.getString("password");
-				
-				User u = new User(username,firstName,lastName,email,password);
-				u.setUserId(userId);
-				
-				// add user object to list
-				users.add(u);
-			}
-			
-	    return users;
-		}
-		finally {
-			// close JDBC objects;
-			close(dbConnection,sqlStatement,resultSet);
-		}
-	}
-	*/
 	// USER CRUD OPERATIONS
 	
 	// Create a user
-	public int addUser(User u){
+	protected int addUser(User u){
 		String sql = "INSERT INTO USER (username,firstName,lastName,email,password) VALUES(?,?,?,?,?)";
 		int rowsAffected = 0;
 		
@@ -141,9 +93,10 @@ public class DatabaseUtility {
 		return rowsAffected;
 	}
 	
+	
 	// Retrieve a user
-	public User getUserById(int uid) {
-		String sql = "SELECT * FROM users WHERE users.userID=?";
+	protected User getUserById(int uid) {
+		String sql = "SELECT * FROM USER WHERE USER.userID=?";
 		User user=null;
 		
 		try {	
@@ -177,10 +130,11 @@ public class DatabaseUtility {
 			return user;		
 		
 	}
+	
 
-	public User getUserByUsernameAndPassword(String u, String p){
+	protected User getUserByUsernameAndPassword(String u, String p){
 		
-		String sql = "SELECT * FROM users WHERE users.username=? AND users.password=?"; // sql query
+		String sql = "SELECT * FROM USER WHERE USER.username=? AND USER.password=?"; // sql query
 		User user=null;
 		
 		try {	
@@ -214,7 +168,7 @@ public class DatabaseUtility {
 			return user;
 	}
 
-	public User getUserByUsernameAndEmail(String u, String e) {
+	protected User getUserByUsernameAndEmail(String u, String e) {
 		String sql = "SELECT * FROM USER WHERE USER.username=? AND USER.email=?";
 		User user=null;
 		
@@ -250,116 +204,83 @@ public class DatabaseUtility {
 			return user;
 	}
 	
-	// Update a user
-	/*
-	public void updateUser(User u) throws Exception {		
-		//jdbc objects
-		Connection dbConnection=null;
-		PreparedStatement statement=null;
-		
-				
+	protected void updateUser(User u) {	
+		// create sql update query
+		String sql = "UPDATE USER "
+				+"SET username=?, firstName=?, lastName=?, email=?, password=? "
+				+"WHERE userID=?";
 		try {
 			
-			// make connection
-			dbConnection = this.dataSource.getConnection();
-			
-			// create sql insert
-			String sql = "UPDATE users "
-					+"SET username=?, firstName=?, lastName=?, email=?, password=?, biography=?, profilePhoto=?"
-					+" WHERE userID=?";
-			
-			//prepare statement
-			statement = dbConnection.prepareStatement(sql);
-			
+			//prepare sql statement
+			statement = this.connection.prepareStatement(sql);
+			//Set values on placeholders found in sql query string
 			statement.setString(1, u.getUsername());
 			statement.setString(2, u.getFirstName());
 			statement.setString(3, u.getLastName());
 			statement.setString(4, u.getEmail());
 			statement.setString(5, u.getPassword());
-			statement.setString(6, u.getBio());
-			
-			if(u.getProfilePhoto() != null) {
-				statement.setBinaryStream(7, u.getProfilePhoto());
-			}else {
-				statement.setBinaryStream(7, null);
-			}
 			statement.setInt(8,u.getUserId());
 					
 			// execute sql insert
 			statement.execute();
 			
-			}finally {
-				// clean up jdbc objects. 
-				close(dbConnection,statement,null);
-			}		
-		
+			}catch(Exception e) {
+				System.out.println("updating user error");
+				e.printStackTrace();
+			}
 	}
-
-	public void deleteUser(int userId) throws Exception {
-		//jdbc objects
-		Connection dbConnection=null;
-		PreparedStatement statement=null;
-		
+	
+	protected void deleteUser(User user) {
+		// create sql insert
+		String sql = "DELETE FROM USER WHERE USER.username=? AND USER.email=?";
 				
 		try {
 			
-			// make connection
-			dbConnection = this.dataSource.getConnection();
-			
-			// create sql insert
-			String sql = "DELETE FROM users WHERE userID=?";
-			
 			//prepare statement
-			statement = dbConnection.prepareStatement(sql);
-			statement.setInt(1,userId);
+			statement = this.connection.prepareStatement(sql);
+			statement.setString(1,user.getUsername());
+			statement.setString(2,user.getEmail());
 					
 			// execute sql insert
 			statement.execute();
 			
-			}finally {
-				// clean up jdbc objects. 
-				close(dbConnection,statement,null);
+			}catch(Exception e) {
+				System.out.println("deleting user error");
+				e.printStackTrace();
 			}
 	}
-	
-	public User verifyUser(String e) throws SQLException, FileNotFoundException{
-		User user = null;
-		//jdbc objects
-		Connection dbConnection=null;
-		PreparedStatement statement=null;
-		ResultSet results=null;
-		
-		try {
-			// make connection
-			dbConnection = dataSource.getConnection();
-			
-			// create sql insert
-			String sql = "SELECT * FROM users WHERE users.email='"+e+"'";
-			
-			//prepare statement
-			statement = dbConnection.prepareStatement(sql);
-			
-			// execute sql insert
-			results = statement.executeQuery();
-			
-			if(results.next()) {
-				int userId = Integer.parseInt(results.getString("userID"));
-				String username=results.getString("username");
-				String lastName=results.getString("firstName");
-				String firstName=results.getString("lastName");
-				String password=results.getString("password");
-				String email=results.getString("email");
-				String biography=results.getString("biography");
-				
-				user = new User(userId,username,firstName,lastName,email,password,biography);
-				}
-			return user;
-			}finally {
-		    // clean up jdbc objects. 
-			close(dbConnection,statement,results);
-			}
-		}
 
-	*/
-	
+	protected ArrayList<User> getAllUsers(){	
+		ArrayList<User> users = new ArrayList<>(); 
+		
+		// create sql insert
+		String sql = "SELECT * FROM USER ORDER BY USER.userID DESC";	
+		try {
+			Statement statement;
+			//prepare statement
+			 statement = this.connection.createStatement();
+					
+			// execute sql insert
+			this.resultSet = statement.executeQuery(sql);
+			while (resultSet.next()) {
+				// retrieve data from row
+				int userId = resultSet.getInt("userID");
+				String username = resultSet.getString("username");
+				String firstName = resultSet.getString("firstName");
+				String lastName = resultSet.getString("lastName");
+				String email = resultSet.getString("email");
+				String password = resultSet.getString("password");
+				
+				User u = new User(username,firstName,lastName,email,password);
+				u.setUserId(userId);
+				
+				// add user object to list
+				users.add(u);
+			}
+			}catch(Exception e) {
+				System.out.println("deleting user error");
+				e.printStackTrace();
+			}
+		return users;
+	}
 }

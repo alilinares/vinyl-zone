@@ -19,6 +19,7 @@
     <div class="nav">
         <a class="nav-item nav-link" href="LoginServlet">Login</a>
  		<a class="nav-item nav-link" href="RegisterUserServlet">Register</a>
+ 		<a class="nav-item nav-link" href="ManageUsersServlet">List Users</a>
     </div>
   </div>
 </nav>

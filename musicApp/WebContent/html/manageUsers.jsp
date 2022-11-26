@@ -13,21 +13,21 @@
     </tr>
   </thead>
   <tbody>
-  <c:forEach var="u" items="${USER_LIST}">
-	<c:url var="tempLink" value="UserControllerServlet">
+  <c:forEach var="usr" items="${USER_LIST}">
+	<c:url var="tempLink" value="UserProfileServlet">
 	  	<c:param name="command" value="LOAD_USER"/>
-	  	<c:param name="userId" value="${u.userId}"/>
+	  	<c:param name="userId" value="${usr}"/>
 	  </c:url>
 	  
-	   <c:url var="deleteLink" value="UserControllerServlet">
-	  	<c:param name="command" value="DELETE_USER"/>
-	  	<c:param name="userId" value="${u.userId}"/>
+	   <c:url var="deleteLink" value="UserProfileServlet">
+	  	<c:param name="command" value="DELETE_ACCOUNT"/>
+	  	<c:param name="userId" value="${usr}"/>
 	 </c:url>
      <tr>
-     <td>${u.username}</td>
-     <td>${u.firstName}</td>
-     <td>${u.lastName}</td>
-     <td>${u.email}</td>
+     <td>${usr.username}</td>
+     <td>${usr.firstName}</td>
+     <td>${usr.lastName}</td>
+     <td>${usr.email}</td>
      <td><a href="${tempLink}">Update</a></td>
      <td><a href="${deleteLink}" onclick="if(!(confirm('Are you sure you want to delete user?'))){return false;}">Delete</a></td>
      </tr>

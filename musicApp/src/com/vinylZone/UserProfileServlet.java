@@ -38,9 +38,20 @@ public class UserProfileServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// load user information and send to userProfile.jsp
+		String command = request.getParameter("command");
+		User user = (User) request.getAttribute("USER");
 		
 		try {
-			loadUser(request,response);
+			switch(command) {
+			case "UPDATE_PROFILE":
+				updateUser(request,response);
+				break;
+			case "DELETE_ACCOUNT":
+				deleteUser(request,response);
+				break;
+			default:
+				loadUser(request,response);
+			}
 		} catch (Exception e) {
 			System.out.println("an error occurred while loading user...");
 			e.printStackTrace();
@@ -51,8 +62,26 @@ public class UserProfileServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		
+		String command = request.getParameter("command");
+		User user = (User) request.getAttribute("USER");
+		
+		switch(command) {
+		case "UPDATE_PROFILE":
+			updateUser(request,response);
+			break;
+		case "DELETE_ACCOUNT":
+			deleteUser(request,response);
+			break;
+		default:
+			try {
+				loadUser(request,response);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println("Command not found");
+		}
 	}
 	
 	private void loadUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -71,5 +100,40 @@ public class UserProfileServlet extends HttpServlet {
 		dispatcher.forward(request, response);
 		
 	}
+
+	private void updateUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		//update user data
+		String username = request.getParameter("username");
+		String firstname = request.getParameter("firstName");
+		String lastname = request.getParameter("lastName");
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		// String biography = request.getParameter("bio");
+		// String profilePhoto = request.getParameter("profilePhoto");
+		
+		//store user information in user object
+		User user = new User(username,firstname,lastname,email,password);
+		
+		//call application function
+		applicationDao.updateUserProfile(user,this.dataSource); // pass user object and dataSource
+		
+		//Send user back to profile - fake refresh
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("profile.jsp");
+		requestDispatcher.forward(request, response);
+		
+		
+	}
+	
+	private void deleteUser(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+		User user = (User) request.getAttribute("USER");
+		
+		this.applicationDao.deleteUser(user, this.dataSource);
+		
+		//Send user back to profile - fake refresh
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("index.jsp");
+		requestDispatcher.forward(request, response);
+		
+	}
+
 
 }

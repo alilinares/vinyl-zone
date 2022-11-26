@@ -31,14 +31,10 @@ public class IndexServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	  	// get data
-		List<User> users = new ArrayList<>();
-		request.setAttribute("users", users);
 		
 		// get request dispatcher
 		RequestDispatcher dispatcher =
-				request.getRequestDispatcher("/index.jsp");
-
+		request.getRequestDispatcher("/index.jsp");
 		//send to jsp
 		dispatcher.forward(request,response);
 	}

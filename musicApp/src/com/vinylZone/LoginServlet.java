@@ -77,7 +77,11 @@ public class LoginServlet extends HttpServlet {
 		
 		// Does user exist?
 		if(user != null) {
+			Cookie userCookie = new Cookie("USER_ID",String.valueOf(user.getUserId()));
 			
+			//setting cookie to expiry in 30 mins
+			userCookie.setMaxAge(30*60);
+			response.addCookie(userCookie);
 			//Attach user obj to the request
 			request.setAttribute("USER", user);
 			

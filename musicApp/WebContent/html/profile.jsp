@@ -3,7 +3,7 @@
 
 <h2 class='display-2 mb-5'>Public Profile</h2>
 
-<form action="UserControllerServlet" method="POST" enctype="multipart/form-data">
+<form action="UpdateProfileServlet" method="POST" enctype="multipart/form-data">
 
   <input type="hidden" name="userId" value="${USER.userId}" />
   
@@ -45,8 +45,11 @@
     <input type="file" class="form-control-file w-50 mt-3 mb-3" id="profilePhoto" name="profilePhoto" value="${USER.profilePhoto}">
   </div>
 
-  <button type="submit" name="command" value="UPDATE_USER" class="btn bg-secondary text-light mt-3 mb-3">Update</button>
-  
+  <button type="submit" name="command" value="UPDATE_PROFILE" class="btn bg-secondary text-light mt-3 mb-3">Update</button>
 </form>
+
+  <form action="UserProfileServlet" method="POST">
+   <button type="submit" name="command" value="DELETE_ACCOUNT" class="btn bg-secondary text-light mt-3 mb-3">Delete Account</button>
+  </form>
 
 <jsp:include page="footer.jsp"/> 
