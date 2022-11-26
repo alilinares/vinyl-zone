@@ -17,10 +17,8 @@
     	<img src="images/vinyl.png" alt="vinyl record graphic" width="30" height="30" class="align-middle" /> 
     	${fn:toUpperCase("Vinyl Zone")}</a>
     <div class="nav">
-        <a class="nav-item nav-link" href="login.jsp">Login</a>
- 		<a class="nav-item nav-link" href="register.jsp">Register</a>
- 		<a class="nav-item nav-link" href="UserControllerServlet">User List</a>
- 		<a class="nav-item nav-link" href="fileUpload.jsp">File Upload</a>
+        <a class="nav-item nav-link" href="LoginServlet">Login</a>
+ 		<a class="nav-item nav-link" href="RegisterUserServlet">Register</a>
     </div>
   </div>
 </nav>
