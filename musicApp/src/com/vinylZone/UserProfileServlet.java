@@ -112,7 +112,7 @@ public class UserProfileServlet extends HttpServlet {
 		// String profilePhoto = request.getParameter("profilePhoto");
 		
 		//store user information in user object
-		User user = new User(username,firstname,lastname,email,password);
+		User user = new UserBuilder().setUserId(username).setUsername(firstname).setFirstName(lastname).setLastName(email).setEmail(password).createUser();
 		
 		//call application function
 		applicationDao.updateUserProfile(user,this.dataSource); // pass user object and dataSource

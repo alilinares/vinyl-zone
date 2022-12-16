@@ -1,7 +1,5 @@
 package com.vinylZone;
-
 public class Track {
-
 
     //fields
     private int trackId;
@@ -10,7 +8,6 @@ public class Track {
     private String title;
     private String lyrics;
     private String releaseDate;
-
 
     //constructors
     public Track(int trackId, int duration, String title, String lyrics, String releaseDate){
@@ -22,10 +19,7 @@ public class Track {
         this.releaseDate = releaseDate;
     }
 
-
-
     //methods
-
 
     public int getTrackId() {
         return trackId;

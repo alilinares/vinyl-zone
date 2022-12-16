@@ -1,10 +1,5 @@
 package com.vinylZone;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -120,7 +115,7 @@ public class DatabaseUtility {
 				String role = resultSet.getString("role");
 		
 				//instantiate user object
-				user = new User(username,firstName,lastName,email,password);
+				user = new UserBuilder().setUserId(username).setUsername(firstName).setFirstName(lastName).setLastName(email).setEmail(password).createUser();
 				user.setUserId(uid);
 				}
 			}catch(Exception e) {
@@ -159,7 +154,7 @@ public class DatabaseUtility {
 				String role = resultSet.getString("role");
 		
 				//instantiate user object
-				user = new User(username,firstName,lastName,email,password);
+				user = new UserBuilder().setUserId(username).setUsername(firstName).setFirstName(lastName).setLastName(email).setEmail(password).createUser();
 				}
 			}catch(Exception e) {
 				System.out.println("user not found");
@@ -195,7 +190,7 @@ public class DatabaseUtility {
 				String role = resultSet.getString("role");
 		
 				//instantiate user object
-				user = new User(userID,username,firstName,lastName,email,password);
+				user = new UserBuilder().setUserId(userID).setUsername(username).setFirstName(firstName).setLastName(lastName).setEmail(email).setPassword(password).createUser();
 				}
 			}catch(Exception exception) {
 				System.out.println("trouble finding user...");
@@ -271,7 +266,7 @@ public class DatabaseUtility {
 				String email = resultSet.getString("email");
 				String password = resultSet.getString("password");
 				
-				User u = new User(username,firstName,lastName,email,password);
+				User u = new UserBuilder().setUserId(username).setUsername(firstName).setFirstName(lastName).setLastName(email).setEmail(password).createUser();
 				u.setUserId(userId);
 				
 				// add user object to list

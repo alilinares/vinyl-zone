@@ -7,7 +7,7 @@ import java.io.InputStream;
 
 public class User {
 
-    //fields
+//fields
 
     private int userId;
 
@@ -32,9 +32,20 @@ public class User {
 	 * @param profilePhoto
 	 * @param bio
 	 */
+
+	public User(int userId, String username, String firstName, String lastName, String email, String password, String role, InputStream profilePhoto, String bio) {
+		this.userId = userId;
+		this.username = username;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		this.role = role;
+		this.profilePhoto = profilePhoto;
+		this.bio = bio;
+	}
     
-    
-    public User(String username
+/*    public User(String username
     			, String firstName
     			, String lastName
     			, String email
@@ -88,9 +99,9 @@ public class User {
 		this.profilePhoto = profilePhoto;
 		this.bio = bio;
 		this.role = "subscriber";
-		
+
 	}
-	
+	*/
     //methods
 
 	public void setUserId(int userId) {
