@@ -53,7 +53,7 @@ public class RegisterUserServlet extends HttpServlet {
 		String password = request.getParameter("password");
 		
         //Create a user instance
-		User user = new UserBuilder().setUserId(username).setUsername(firstname).setFirstName(lastname).setLastName(email).setEmail(password).createUser();
+		User user = new UserBuilder().setUsername(username).setFirstName(firstname).setLastName(lastname).setEmail(email).createUser();
 		
 		//register user to the database
 		int rowsAffected = applicationDao.registerUser(user,this.dataSource);
