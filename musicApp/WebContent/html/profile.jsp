@@ -3,7 +3,7 @@
 
 <h2 class='display-2 mb-5'>Public Profile</h2>
 
-<form action="UpdateProfileServlet" method="POST" enctype="multipart/form-data">
+<form action="UserProfileServlet" method="POST" enctype="multipart/form-data">
 
   <input type="hidden" name="userId" value="${USER.userId}" />
   
@@ -49,6 +49,7 @@
 </form>
 
   <form action="UserProfileServlet" method="POST">
+   <input type="hidden" name="userId" value="${USER.userId}" />
    <button type="submit" name="command" value="DELETE_ACCOUNT" class="btn bg-secondary text-light mt-3 mb-3">Delete Account</button>
   </form>
 

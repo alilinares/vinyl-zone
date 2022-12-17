@@ -77,7 +77,7 @@ public class LoginServlet extends HttpServlet {
 		
 		//Verify and Retrieve User from database
 		User user = applicationDao.findUserByUsernameAndPassword(username,password,this.dataSource);
-		
+		System.out.println(user);
 		// Does user exist?
 		if(user != null) {
 			Cookie userCookie = new Cookie("USER_ID",String.valueOf(user.getUserId()));

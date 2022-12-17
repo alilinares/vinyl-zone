@@ -61,12 +61,13 @@ public class RegisterUserServlet extends HttpServlet {
 		
 		//register user to the database
 		int rowsAffected = applicationDao.registerUser(user,this.dataSource);
+		//get user
+		User loadedUser = (User) this.applicationDao.findUserByUsernameAndEmail(user.getUsername(),user.getEmail(), dataSource);
 		
 		if( rowsAffected > 0 ) {
 			
 			// make sure to include information for userProfileServlet
-			request.setAttribute("USER", user);
-			
+			request.setAttribute("USER",loadedUser);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("UserProfileServlet");
 			dispatcher.forward(request, response);
 			

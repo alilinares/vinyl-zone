@@ -118,8 +118,8 @@ public class DatabaseUtility {
 				String role = resultSet.getString("role");
 		
 				//instantiate user object
-				user = new UserBuilder().setUsername(username).setFirstName(firstName).setLastName(lastName).setEmail(email).setPassword(password).createUser();
-				user.setUserId(uid);
+				user = new UserBuilder().setUserId(uid).setUsername(username).setFirstName(firstName).setLastName(lastName).setEmail(email).setPassword(password).createUser();
+				
 				}
 			}catch(Exception e) {
 				System.out.println("trouble finding user...");
@@ -144,8 +144,10 @@ public class DatabaseUtility {
 					
 			// execute sql and store results
 			this.resultSet = statement.executeQuery();
+			System.out.println(this.resultSet);
 			
 			if(resultSet.next()) {
+				System.out.println("if resultset.next() stepped in");
 				int userId = Integer.parseInt(resultSet.getString("userID"));
 				String username = resultSet.getString("username");
 				String firstName = resultSet.getString("firstName");
@@ -157,12 +159,22 @@ public class DatabaseUtility {
 				String role = resultSet.getString("role");
 		
 				//instantiate user object
-				user = new UserBuilder().setUsername(username).setFirstName(firstName).setLastName(lastName).setEmail(email).setPassword(password).createUser();
+				user = new UserBuilder()
+						.setUserId(userId)
+						.setUsername(username)
+						.setFirstName(firstName)
+						.setLastName(lastName)
+						.setEmail(email)
+						.setPassword(password)
+						.setBio(bio)
+						.setRole(role)
+						.createUser();
 				}
 			}catch(Exception e) {
 				System.out.println("user not found");
 				e.printStackTrace();
 			}
+		System.out.println("From database util user= "+user);
 			return user;
 	}
 
@@ -270,7 +282,6 @@ public class DatabaseUtility {
 				String password = resultSet.getString("password");
 				
 				User u = new UserBuilder().setUserId(userId).setUsername(username).setFirstName(firstName).setLastName(lastName).setEmail(email).setPassword(password).createUser();
-				u.setUserId(userId);
 				
 				// add user object to list
 				users.add(u);

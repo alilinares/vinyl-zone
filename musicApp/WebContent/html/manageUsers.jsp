@@ -16,12 +16,12 @@
   <c:forEach var="usr" items="${USER_LIST}">
 	<c:url var="tempLink" value="UserProfileServlet">
 	  	<c:param name="command" value="LOAD_USER"/>
-	  	<c:param name="userId" value="${usr}"/>
+	  	<c:param name="userId" value="${usr.userId}"/>
 	  </c:url>
 	  
 	   <c:url var="deleteLink" value="UserProfileServlet">
 	  	<c:param name="command" value="DELETE_ACCOUNT"/>
-	  	<c:param name="userId" value="${usr}"/>
+	  	<c:param name="userId" value="${usr.userId}"/>
 	 </c:url>
      <tr>
      <td>${usr.username}</td>

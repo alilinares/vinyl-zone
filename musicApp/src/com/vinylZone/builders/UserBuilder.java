@@ -12,7 +12,7 @@ public class UserBuilder {
     private String email;
     private String password;
     private String role;
-    private InputStream profilePhoto;
+    private InputStream profilePhoto=null;
     private String bio;
 
     public UserBuilder setUserId(int userId) {

@@ -68,7 +68,6 @@ public class UserProfileServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String command = request.getParameter("command");
-		User user = (User) request.getAttribute("USER");
 		
 		switch(command) {
 		case "UPDATE_PROFILE":
@@ -84,21 +83,19 @@ public class UserProfileServlet extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println("Command not found");
+			System.out.println("UserProfileServlet doPost: Command not found");
 		}
 	}
 	
 	private void loadUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		// get user data and send them too userProfile
 		User user = (User) request.getAttribute("USER");
-		
-		//get specific user 	
-		//get from database
-		user = applicationDao.findUserByUsernameAndEmail(user.getUsername(),user.getEmail(),this.dataSource);
-		
+		if(user == null) {
+			int uid = Integer.valueOf(request.getParameter("userId"));
+			// get user
+			user = this.applicationDao.findUserById(uid, dataSource);	
+		}
 		//store user in request
 		request.setAttribute("USER", user);
-		
 		//send to userProfile
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/profile.jsp");
 		dispatcher.forward(request, response);
@@ -129,12 +126,16 @@ public class UserProfileServlet extends HttpServlet {
 	}
 	
 	private void deleteUser(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-		User user = (User) request.getAttribute("USER");
-		
-		this.applicationDao.deleteUser(user, this.dataSource);
-		
+		// get user data and send them too userProfile
+		int uid = Integer.valueOf(request.getParameter("userId"));
+		// set user variable
+		User user = null;
+		// get user
+		user = this.applicationDao.findUserById(uid, dataSource);	
+		// delete userId
+		this.applicationDao.deleteUser(user, dataSource);
 		//Send user back to profile - fake refresh
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher("index.jsp");
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("ManageUsersServlet");
 		requestDispatcher.forward(request, response);
 		
 	}

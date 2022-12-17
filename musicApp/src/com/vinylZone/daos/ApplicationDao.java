@@ -40,6 +40,21 @@ public class ApplicationDao {
 		return rowsAffected;
 	}
 	
+	public User findUserById(int uid,DataSource dataSource) {
+		User user = null;
+		try {
+			databaseUtility.makeConnection(dataSource);
+			user = databaseUtility.getUserById(uid);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+		    // close connection
+			databaseUtility.closeConnection();
+		}
+		return user;
+	}
+	
 	public User findUserByUsernameAndEmail(String un,String em, DataSource dataSource) {
 		User user = null;
 		try {
@@ -60,7 +75,8 @@ public class ApplicationDao {
 		User user = null;
 		try {
 			// start a connection to the database
-			databaseUtility.makeConnection(dataSource);
+			this.databaseUtility.makeConnection(dataSource);
+			System.out.println(this.databaseUtility);
 			// Retrieve user from database if user exists, else return null 
 			user = databaseUtility.getUserByUsernameAndPassword(username,password);
 		} catch (Exception e) {
