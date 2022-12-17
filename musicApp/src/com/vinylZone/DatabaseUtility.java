@@ -115,7 +115,7 @@ public class DatabaseUtility {
 				String role = resultSet.getString("role");
 		
 				//instantiate user object
-				user = new UserBuilder().setUserId(username).setUsername(firstName).setFirstName(lastName).setLastName(email).setEmail(password).createUser();
+				user = new UserBuilder().setUsername(username).setFirstName(firstName).setLastName(lastName).setEmail(email).setPassword(password).createUser();
 				user.setUserId(uid);
 				}
 			}catch(Exception e) {
@@ -154,7 +154,7 @@ public class DatabaseUtility {
 				String role = resultSet.getString("role");
 		
 				//instantiate user object
-				user = new UserBuilder().setUserId(username).setUsername(firstName).setFirstName(lastName).setLastName(email).setEmail(password).createUser();
+				user = new UserBuilder().setUsername(username).setFirstName(firstName).setLastName(lastName).setEmail(email).setPassword(password).createUser();
 				}
 			}catch(Exception e) {
 				System.out.println("user not found");
@@ -266,7 +266,7 @@ public class DatabaseUtility {
 				String email = resultSet.getString("email");
 				String password = resultSet.getString("password");
 				
-				User u = new UserBuilder().setUserId(username).setUsername(firstName).setFirstName(lastName).setLastName(email).setEmail(password).createUser();
+				User u = new UserBuilder().setUserId(userId).setUsername(username).setFirstName(firstName).setLastName(lastName).setEmail(email).setPassword(password).createUser();
 				u.setUserId(userId);
 				
 				// add user object to list
