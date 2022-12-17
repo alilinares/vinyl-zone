@@ -1,4 +1,7 @@
-package com.vinylZone;
+package com.vinylZone.servlets;
+
+import com.vinylZone.daos.ApplicationDao;
+import com.vinylZone.beans.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +21,7 @@ import javax.sql.DataSource;
 @WebServlet("/ManageUsersServlet")
 public class ManageUsersServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private  ApplicationDao applicationDao;
+	private ApplicationDao applicationDao;
 	
 	@Resource(name="jdbc/vinylZone") // Get Resource - JDBC Driver and other meta  (context.xml)
 	protected DataSource dataSource;

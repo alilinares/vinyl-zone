@@ -1,36 +1,31 @@
-package com.vinylZone;
+package com.vinylZone.beans;
 
-public class Album {
-
+public class Playlist {
     //fields
-
-    private int albumId;
+    private int playlistId;
 
     private String title;
     private int duration;
-    private String releaseDate;
     private String description;
 
     //constructors
+    public Playlist(int playlistId, String title, int duration, String description){
 
-    public Album(int albumId, String title, int duration, String releaseDate, String description){
-
-
-        this.albumId = albumId;
+        this.playlistId = playlistId;
         this.title = title;
         this.duration = duration;
-        this.releaseDate = releaseDate;
         this.description = description;
     }
 
+
     //methods
 
-    public int getAlbumId() {
-        return albumId;
+    public int getPlaylistId() {
+        return playlistId;
     }
 
-    public void setAlbumId(int albumId) {
-        this.albumId = albumId;
+    public void setPlaylistId(int playlistId) {
+        this.playlistId = playlistId;
     }
 
     public String getTitle() {
@@ -47,14 +42,6 @@ public class Album {
 
     public void setDuration(int duration) {
         this.duration = duration;
-    }
-
-    public String getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
     }
 
     public String getDescription() {

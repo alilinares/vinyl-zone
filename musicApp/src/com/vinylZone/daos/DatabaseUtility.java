@@ -1,4 +1,7 @@
-package com.vinylZone;
+package com.vinylZone.daos;
+
+import com.vinylZone.beans.User;
+import com.vinylZone.builders.UserBuilder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,4 +1,6 @@
-package com.vinylZone;
+package com.vinylZone.builders;
+
+import com.vinylZone.beans.Playlist;
 
 public class PlaylistBuilder {
     private int playlistId;

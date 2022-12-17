@@ -1,4 +1,4 @@
-package com.vinylZone;
+package com.vinylZone.servlets;
 
 import java.io.*;
 import javax.servlet.*;

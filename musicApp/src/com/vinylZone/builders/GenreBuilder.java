@@ -1,4 +1,6 @@
-package com.vinylZone;
+package com.vinylZone.builders;
+
+import com.vinylZone.beans.Genre;
 
 public class GenreBuilder {
     private int genreId;

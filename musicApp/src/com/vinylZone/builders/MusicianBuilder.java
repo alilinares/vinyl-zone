@@ -1,4 +1,6 @@
-package com.vinylZone;
+package com.vinylZone.builders;
+
+import com.vinylZone.beans.Musician;
 
 public class MusicianBuilder {
     private int musicianId;

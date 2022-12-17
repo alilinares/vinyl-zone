@@ -1,4 +1,7 @@
-package com.vinylZone;
+package com.vinylZone.servlets;
+
+import com.vinylZone.daos.ApplicationDao;
+import com.vinylZone.beans.User;
 
 import java.io.IOException;
 

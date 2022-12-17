@@ -1,4 +1,4 @@
-package com.vinylZone;
+package com.vinylZone.beans;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -45,7 +45,7 @@ public class User {
 		this.bio = bio;
 	}
     
-/*    public User(String username
+   public User(String username
     			, String firstName
     			, String lastName
     			, String email
@@ -101,7 +101,6 @@ public class User {
 		this.role = "subscriber";
 
 	}
-	*/
     //methods
 
 	public void setUserId(int userId) {

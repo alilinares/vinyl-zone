@@ -1,4 +1,4 @@
-package com.vinylZone;
+package com.vinylZone.servlets;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class RegisterSongServlet
+ * Servlet implementation class PasswordServlet
  */
-@WebServlet("/RegisterSongServlet")
-public class RegisterSongServlet extends HttpServlet {
+@WebServlet("/PasswordServlet")
+public class PasswordServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RegisterSongServlet() {
+    public PasswordServlet() {
         super();
         // TODO Auto-generated constructor stub
     }

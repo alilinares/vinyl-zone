@@ -1,4 +1,4 @@
-package com.vinylZone;
+package com.vinylZone.beans;
 public class Track {
 
     //fields
