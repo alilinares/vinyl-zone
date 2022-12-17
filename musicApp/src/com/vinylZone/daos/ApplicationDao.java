@@ -22,7 +22,7 @@ public class ApplicationDao {
 
     // USER OPERATIONS
 	
-	protected int registerUser(User user, DataSource dataSource) {
+	public int registerUser(User user, DataSource dataSource) {
 		int rowsAffected = 0;
 		
 		try {
@@ -40,7 +40,7 @@ public class ApplicationDao {
 		return rowsAffected;
 	}
 	
-	protected User findUserByUsernameAndEmail(String un,String em, DataSource dataSource) {
+	public User findUserByUsernameAndEmail(String un,String em, DataSource dataSource) {
 		User user = null;
 		try {
 			// start a connection to the database
@@ -56,7 +56,7 @@ public class ApplicationDao {
 		return user;	
 	}
     
-	protected User findUserByUsernameAndPassword(String username,String password, DataSource dataSource) {
+	public User findUserByUsernameAndPassword(String username,String password, DataSource dataSource) {
 		User user = null;
 		try {
 			// start a connection to the database
@@ -89,7 +89,7 @@ public class ApplicationDao {
 		return user;
 	}
 
-	protected void updateUserProfile(User user,DataSource dataSource){
+	public void updateUserProfile(User user,DataSource dataSource){
 		// update user's information
 		try {
 			//start connection
@@ -104,7 +104,7 @@ public class ApplicationDao {
 		}
 	}
 	
-	protected void deleteUser(User user,DataSource dataSource) {
+	public void deleteUser(User user,DataSource dataSource) {
 		// update user's information
 		try {
 			//start connection
@@ -121,7 +121,7 @@ public class ApplicationDao {
 		
 	}
 	
-	protected ArrayList<User> getListOfUsers(DataSource dataSource) {
+	public ArrayList<User> getListOfUsers(DataSource dataSource) {
 		
 		ArrayList<User> users = null;
 		try {
